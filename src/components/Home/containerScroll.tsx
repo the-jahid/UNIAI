@@ -16,14 +16,14 @@ export function ContainerScrollDemo() {
 Gems and
 New Friends’
       </h2>
-      <p className="max-w-xl mx-auto text-sm md:text-lg text-blue-700 dark:text-neutral-400 text-center">
+      <p className="max-w-xl mx-auto text-sm md:text-lg text-white font-semibold dark:text-neutral-400 text-center">
       Explore the city's best-kept secrets and make new connections along the way. Join us to uncover hidden gems, meet new friends, and experience the city like never before.
       </p>
           </>
         }
       >
         <Image
-          src={`/2-2.png`}
+          src={`/Screenshot (976).png`}
           alt="hero"
           height={720}
           width={1400}

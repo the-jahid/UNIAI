@@ -9,33 +9,11 @@ import Link from "next/link";
 
 export function FeaturesSectionDemo() {
   const features = [
+   
     {
-      title: "Make $100k Behind The Wheel",
+      title: "",
       description:
-        "Unlock the potential to earn $100k by driving. Join our platform to find lucrative driving opportunities and maximize your earnings.",
-      skeleton: <SkeletonOne />,
-      className:
-        " col-span-1 lg:col-span-4 border-b lg:border-r dark:border-neutral-800 ",
-    },
-    {
-      title: "Matchmaking with UNI",
-      description:
-        "UNI simplifies life and boosts meaningful connections. We’re a community that bridges the gap between online and real-life interactions through events, travel, and work opportunities. Join us to create your journey together!",
-      skeleton: <SkeletonTwo />,
-      className: "border-b col-span-1 lg:col-span-2 dark:border-neutral-800",
-    },
-    {
-      title: "Watch our Video on YouTube",
-      description:
-        "Whether its you or Tyler Durden, you can get to know about our product on YouTube",
-      skeleton: <SkeletonThree />,
-      className:
-        "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
-    },
-    {
-      title: "Connecting the World Seamlessly",
-      description:
-        "UNI simplifies life and boosts meaningful connections. We empower everyone by bridging the gap between online connections and real-life interactions through events, travel, and work opportunities. At UNI, we believe in fairness, freedom, and fun. Let's create your journey together!",
+        "",
       skeleton: <SkeletonFour />,
       className: "col-span-1 lg:col-span-3 border-b lg:border-none",
     },
@@ -47,7 +25,7 @@ export function FeaturesSectionDemo() {
       <h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
          Plan Out Your Fun
       </h2>
-      <p className="max-w-xl mx-auto text-sm md:text-lg text-blue-700 dark:text-neutral-400 text-center">
+      <p className="max-w-xl mx-auto text-sm md:text-lg text-white font-semibold dark:text-neutral-400 text-center">
       UNI opens you a world of endless possibilities of activities and things to do, without breaking the bank!
       </p>
       </div>
@@ -278,8 +256,8 @@ export const SkeletonTwo = () => {
 
 export const SkeletonFour = () => {
   return (
-    <div className="h-60 md:h-60  flex flex-col items-center relative bg-transparent dark:bg-transparent mt-10">
-      <Globe className="absolute -right-10 md:-right-10 -bottom-80 md:-bottom-72" />
+    <div className="h-60 md:h-60  flex flex-col items-center justify-center relative bg-transparent dark:bg-transparent mt-10">
+      <Globe className="absolute -right-10 md:-right-10 -bottom-50 md:-bottom-72" />
     </div>
   );
 };
