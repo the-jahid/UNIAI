@@ -2,8 +2,14 @@
 
 import { useEffect, useState, useRef } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
-import { Button } from '@/components/ui/button';
-import Modal from '@/components/AISearchModal';
+import { Button } from "@/components/ui/button";
+import { ModalBody, ModalContent, ModalFooter, ModalTrigger, Modal } from '@/components/ui/animated-modal';
+import AISearchModal from '@/components/AISearchModal';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { motion, AnimatePresence } from 'framer-motion'
+import { Input } from '@/components/ui/input';
+import { Car, DollarSign, Train, Zap } from 'lucide-react';
 
 interface Event {
   id: string;
@@ -45,14 +51,46 @@ export default function MapDemo() {
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
   const [distance, setDistance] = useState<string | null>(null);
+  const [duration, setDuration] = useState<string | null>(null);
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
+  const costCalculatorRef = useRef<HTMLDivElement>(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [animateSavings, setAnimateSavings] = useState(false)
+  const [calculatedCosts, setCalculatedCosts] = useState<{ uniTripCost: number | null, uberCost: number | null, savings: number | null } | null>(null)
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const calculateUniTripCost = (minutes: number) => {
+    return 0.75 * minutes + 0.25
+  }
+
+  const calculateUberCost = (minutes: number) => {
+    return 1.25 * minutes + 1
+  }
+
+  const handleCalculateCosts = () => {
+    if (duration) {
+      const minutes = parseFloat(duration)
+      const uniTripCost = calculateUniTripCost(minutes)
+      const uberCost = calculateUberCost(minutes)
+      const savings = uberCost - uniTripCost
+      setCalculatedCosts({ uniTripCost, uberCost, savings })
+      setAnimateSavings(true)
+      setTimeout(() => setAnimateSavings(false), 1000)
+    }
+  }
+
+  useEffect(() => {
+    if (calculatedCosts?.savings !== null) {
+      setAnimateSavings(true)
+      const timer = setTimeout(() => setAnimateSavings(false), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [calculatedCosts])
+
+  const setEventsdrilling = (newEvents: any) => {
+    setEvents(newEvents);
+  }
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -82,7 +120,7 @@ export default function MapDemo() {
 
     loader.load().then(() => {
       const map = new google.maps.Map(mapRef.current!, {
-        center: { lat: 20, lng: 0 }, // Center of the world
+        center: { lat: 20, lng: 0 },
         zoom: 2,
         styles: [
           { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
@@ -179,15 +217,28 @@ export default function MapDemo() {
 
         bounds.extend(position);
 
+        const markerImage = {
+          url: event.images[0].url,
+          scaledSize: new google.maps.Size(50, 50),
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(25, 25),
+          shape: {
+            coords: [25, 25, 25],
+            type: 'circle'
+          },
+          optimized: false
+        };
+
         const marker = new google.maps.Marker({
           position,
           map,
+          icon: markerImage,
           title: event.name,
         });
 
         const infoWindow = new google.maps.InfoWindow({
           content: `
-            <div style="color: #FFFFFF; background-color: #1a1a1a; padding: 15px; max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
+            <div style="color: #FF; background-color: #1a1a1a; padding: 15px; max-width: 300px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);">
               <h3 style="font-weight: bold; margin-bottom: 10px; font-size: 1.2em;">${event.name}</h3>
               <div style="display: flex; justify-content: center; margin-bottom: 10px;">
                 ${event.images.slice(0, 1).map(img => `
@@ -202,33 +253,38 @@ export default function MapDemo() {
             </div>
           `,
         });
-
         marker.addListener('click', () => {
           if (mapInstanceRef.current) {
             mapInstanceRef.current.setZoom(10);
           }
           mapInstanceRef.current!.setCenter(position);
           infoWindow.open(map, marker);
-
+      
           google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
             document.getElementById(`start-journey-${event.id}`)?.addEventListener('click', () => {
               if (userLocation) {
                 const directionsService = new google.maps.DirectionsService();
                 const directionsRenderer = new google.maps.DirectionsRenderer();
                 directionsRenderer.setMap(map);
-
+      
                 const request = {
                   origin: userLocation,
                   destination: position,
                   travelMode: google.maps.TravelMode.DRIVING
                 };
-
+      
                 directionsService.route(request, (result, status) => {
                   if (status === 'OK') {
                     directionsRenderer.setDirections(result);
                     if (result?.routes[0]?.legs[0]?.distance?.text) {
                       setDistance(result.routes[0].legs[0].distance.text);
                     }
+                    if (result?.routes[0]?.legs[0]?.duration?.text) {
+                      const durationInMinutes = Math.round(result.routes[0].legs[0].duration.value / 60);
+                      setDuration(durationInMinutes.toString());
+                      handleCalculateCosts();
+                    }
+                    costCalculatorRef.current?.scrollIntoView({ behavior: 'smooth' });
                   }
                 });
               } else {
@@ -314,35 +370,165 @@ export default function MapDemo() {
     setFilteredEvents(filtered);
   };
 
+  const inputVariants = {
+    blur: { scale: 1, opacity: 1 },
+    focus: { scale: 1.05, opacity: 1 }
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.8 },
+    visible: { opacity: 1, scale: 1 }
+  };
+
   return (
     <div className="min-h--[90vh] mt-20 bg-black w-full p-4 text-blue-500">
       <div className="mx-auto mt-4">
-      <div className='flex flex-col sm:flex-row justify-between items-center mb-4 w-full'>
-  <input
-    ref={searchInputRef}
-    type="text"
-    placeholder="Search for a place"
-    className="p-2 border border-blue-300 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
-  />
-  <Button className="bg-blue-500 hover:bg-blue-600 text-white w-full sm:w-auto" onClick={openModal}>
-    Search Using AI
-  </Button>
-</div>
-     
-        <div>
-          {userLocation && (
-          <p className="mt-2 text-blue-600">
-            Your selected location: Lat: {userLocation.lat.toFixed(4)}, Lng: {userLocation.lng.toFixed(4)}
-          </p>
-        )}
-        {distance && (
-          <p className="mt-2 text-blue-600">
-            Distance to event: {distance}
-          </p>
-        )}
+        <div className='flex flex-col sm:flex-row justify-between items-center mb-4 w-full'>
+          <input
+            ref={searchInputRef}
+            type="text"
+            placeholder="Search for a place"
+            className="p-2 border border-blue-300 rounded mb-2 sm:mb-0 sm:mr-2 w-full sm:w-auto"
+          />
+          <Modal>
+            <ModalTrigger className="bg-blue-500 dark:bg-white dark:text-black text-white flex justify-center group/modal-btn">
+              <span className="group-hover/modal-btn:translate-x-40 text-center transition duration-500">
+                Search with AI
+              </span>
+              <div className="-translate-x-40 group-hover/modal-btn:translate-x-0 flex items-center justify-center absolute inset-0 transition duration-500 text-white z-20">
+                ✈️
+              </div>
+            </ModalTrigger>
+            <ModalBody>
+              <ModalContent>
+                <AISearchModal setEventsdrilling={setEventsdrilling} />
+              </ModalContent>
+            </ModalBody>
+          </Modal>
         </div>
+      
         <div ref={mapRef} className="h-[calc(100vh-200px)] w-full rounded-lg overflow-hidden mb-4" />
-        <Modal isOpen={isModalOpen} onClose={closeModal} />
+
+        <div ref={costCalculatorRef}>
+          <Card className="w-full bg-gray-800/50 border-blue-400/30 shadow-xl backdrop-blur-sm">
+            <CardHeader className="relative overflow-hidden pb-10">
+              <div className="absolute inset-0 bg-blue-500/10 animate-pulse"></div>
+              <CardTitle className="text-5xl font-bold text-center text-blue-100 relative z-10 mt-6">
+                Ride Cost Comparison
+              </CardTitle>
+              <p className="text-blue-200 text-center mt-2 relative z-10">Compare UNI TRIP vs Uber and see your savings</p>
+            </CardHeader>
+            <CardContent className="relative px-8 pb-8">
+              <div className="grid gap-10">
+                <div className="grid sm:grid-cols-2 gap-6">
+                  <div>
+                    <Label htmlFor="duration" className="text-blue-200 mb-2 block text-sm uppercase tracking-wide">Duration (minutes)</Label>
+                    <motion.div variants={inputVariants} whileFocus="focus" initial="blur" animate="blur">
+                      <Input
+                        id="duration"
+                        type="number"
+                        value={duration ?? ''}
+                        onChange={(e) => setDuration(e.target.value)}
+                        className="bg-gray-700/50 border-blue-400/30 text-white text-lg rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-300"
+                        placeholder="Enter duration"
+                      />
+                    </motion.div>
+                  </div>
+                  <div className="flex items-end">
+                    <Button onClick={handleCalculateCosts} className="w-full bg-blue-500 hover:bg-blue-600 text-white">
+                      Calculate Costs
+                    </Button>
+                  </div>
+                </div>
+
+                {distance && (
+                  <div className="text-center text-blue-200">
+                    <p>Total Distance: {distance}</p>
+                    <p>Total Duration: {duration} minutes</p>
+                  </div>
+                )}
+
+                <AnimatePresence>
+                  {calculatedCosts && (
+                    <motion.div
+                      key="results"
+                      initial="hidden"
+                      animate="visible"
+                      exit="hidden"
+                      variants={cardVariants}
+                    >
+                      <div className="grid sm:grid-cols-2 gap-6 mt-8">
+                        <Card className="bg-gradient-to-br from-blue-600 to-blue-800 border-none overflow-hidden">
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-2xl font-semibold text-white flex items-center justify-center">
+                              <Train className="mr-2" /> UNI TRIP
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <motion.p 
+                              className="text-4xl font-bold text-center text-blue-100"
+                              initial={{ scale: 0.5, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ type: 'spring', stiffness: 200, damping: 10, delay: 0.2 }}
+                            >
+                              ${calculatedCosts.uniTripCost?.toFixed(2)}
+                            </motion.p>
+                          </CardContent>
+                        </Card>
+                        <Card className="bg-gradient-to-br from-purple-600 to-purple-800 border-none overflow-hidden">
+                          <CardHeader className="pb-2">
+                            <CardTitle className="text-2xl font-semibold text-white flex items-center justify-center">
+                              <Car className="mr-2" /> Uber
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="pt-4">
+                            <motion.p 
+                              className="text-4xl font-bold text-center text-purple-100"
+                              initial={{ scale: 0.5, opacity: 0 }}
+                              animate={{ scale: 1, opacity: 1 }}
+                              transition={{ type: 'spring', stiffness: 200, damping: 10, delay: 0.4 }}
+                            >
+                              ${calculatedCosts.uberCost?.toFixed(2)}
+                            </motion.p>
+                          </CardContent>
+                        </Card>
+                      </div>
+
+                      <motion.div
+                        className="mt-12 text-center"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.5 }}
+                      >
+                        <h2 className="text-3xl font-bold mb-4 text-blue-200">Your Savings</h2>
+                        <div className="flex items-center justify-center">
+                          <DollarSign className="text-green-400 mr-1" size={48} />
+                          <motion.span 
+                            className="text-6xl font-bold text-green-400"
+                            animate={{ scale: animateSavings ? [1, 1.2, 1] : 1 }}
+                            transition={{ duration: 0.5 }}
+                          >
+                            {calculatedCosts.savings?.toFixed(2)}
+                          </motion.span>
+                        </div>
+                        <p className="mt-4 text-xl text-blue-200">by choosing UNI TRIP!</p>
+                      </motion.div>
+
+                      <motion.div
+                        className="mt-10 flex justify-center"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.8, duration: 0.5 }}
+                      >
+                        <Zap className="text-yellow-400 animate-pulse" size={48} />
+                      </motion.div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
         
         {loading && <p className="text-blue-600">Loading events...</p>}
         {error && <p className="text-red-500">{error}</p>}

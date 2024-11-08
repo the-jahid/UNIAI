@@ -5,29 +5,28 @@ import { WobbleCard } from "../ui/wobble-card";
 
 export function WobbleCardDemo() {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full py-20 relative">
-      <Image src={'/couple-discussing-about-pick-of-income-for-savings.png'} width={400} height={400} alt='faq' className='absolute -top-40 right-0 -z-10' />
-      <WobbleCard
-        containerClassName="col-span-1 lg:col-span-2 h-full bg-black min-h-[500px] lg:min-h-[300px]"
-        className=""
-      >
-        <div className="max-w-xs">
-          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-          Discover Your World
-          </h2>
-          <p className="mt-4 text-left  text-base/6 text-neutral-200">
-          With UNI, your digital explorations turn into real-life adventures. Our interactive discovery map connects you to people, places, and events nearby or across the globe. Express yourself and explore with ease!
+    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full  relative">
 
-          </p>
-        </div>
-        <Image
-          src="/38801B08-60EB-4140-A1D2-AE6670390283.png"
-          width={700}
-          height={500}
-          alt="linear demo image"
-          className="absolute -right-4 lg:-right-[10%] -top-24  filter -bottom-10 object-contain rounded-2xl"
-        />
-      </WobbleCard>
+<WobbleCard
+  containerClassName="col-span-1 lg:col-span-2 h-full bg-black min-h-[500px] lg:min-h-[300px]  lg:p-8 rounded-lg shadow-lg relative overflow-hidden"
+  className=""
+>
+  <div className="w-full lg:max-w-md">
+    <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
+      Discover Your World
+    </h2>
+    <p className="mt-4 text-left text-sm md:text-base lg:text-lg text-neutral-200">
+      With UNI, your digital explorations turn into real-life adventures. Our interactive discovery map connects you to people, places, and events nearby or across the globe. Express yourself and explore with ease!
+    </p>
+  </div>
+  <Image
+    src="/38801B08-60EB-4140-A1D2-AE6670390283.png"
+    width={700}
+    height={500}
+    alt="linear demo image"
+    className=" lg:absolute lg:-right-[25%]  lg:-top-12 filter lg:-z-20 object-contain rounded-2xl"
+  />
+</WobbleCard>
       <WobbleCard containerClassName="col-span-1 min-h-[300px]">
         <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
         Match & Mingle
@@ -41,7 +40,7 @@ export function WobbleCardDemo() {
           width={700}
           height={500}
           alt="linear demo image"
-          className="absolute -right-4 lg:-right-[10%] -top-18  -z-30 filter -bottom-10 object-contain rounded-2xl"
+          className="lg:absolute  lg:-right-[10%]   -z-30 filter -bottom-10 object-contain rounded-2xl"
         />
       </WobbleCard>
       <WobbleCard containerClassName="col-span-1 min-h-[300px]">
@@ -73,7 +72,7 @@ export function WobbleCardDemo() {
           width={700}
           height={500}
           alt="linear demo image"
-          className="absolute -right-4 lg:-right-[10%]  filter -bottom-10 object-contain rounded-2xl -z-20"
+          className="lg:absolute  lg:-right-[10%]  filter -bottom-10 object-contain rounded-2xl -z-20"
         />
       </WobbleCard>
      

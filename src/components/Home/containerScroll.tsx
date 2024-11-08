@@ -11,7 +11,7 @@ export function ContainerScrollDemo() {
       <ContainerScroll
         titleComponent={
           <>
-<h2 className="bg-clip-text text-transparent text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
+<h2 className="bg-clip-text text-white text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
 ‘Unlock the City – <br /> Discover Hidden
 Gems and
 New Friends’
@@ -23,7 +23,7 @@ New Friends’
         }
       >
         <Image
-          src={`/Screenshot (976).png`}
+          src={`/2-2.png`}
           alt="hero"
           height={720}
           width={1400}
