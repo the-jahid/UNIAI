@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { LampDemo } from "../Home/lamp";
+
 import { TextGenerateEffect } from "../ui/text-generate-effect";
 
 const words = `UNI was born out of a desire to simplify life and boost meaningful connections. We saw how people were paying more for rides, yet gig workers were earning less. That didn’t sit right with us, so we set out to create a solution that empowers everyone.
