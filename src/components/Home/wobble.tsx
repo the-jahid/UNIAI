@@ -22,7 +22,7 @@ export function WobbleCardDemo() {
   <Image
     src="/38801B08-60EB-4140-A1D2-AE6670390283.png"
     width={700}
-    height={500}
+    height={400}
     alt="linear demo image"
     className=" lg:absolute lg:-right-[25%]  lg:-top-12 filter lg:-z-20 object-contain rounded-2xl"
   />
@@ -37,7 +37,7 @@ export function WobbleCardDemo() {
         </p>
         <Image
           src="/9DF64E3F-140B-4BA2-AB0A-D416FA0B1E63.png"
-          width={700}
+          width={600}
           height={500}
           alt="linear demo image"
           className="lg:absolute  lg:-right-[10%]   -z-30 filter -bottom-10 object-contain rounded-2xl"
@@ -70,31 +70,13 @@ export function WobbleCardDemo() {
         <Image
           src="/4A413952-4DDC-4C22-92BD-309488D854E5.png"
           width={700}
-          height={500}
+          height={400}
           alt="linear demo image"
           className="lg:absolute  lg:-right-[10%]  filter -bottom-10 object-contain rounded-2xl -z-20"
         />
       </WobbleCard>
      
-      {/* <WobbleCard containerClassName="col-span-1 lg:col-span-3 bg-black min-h-[500px] lg:min-h-[600px] xl:min-h-[300px]">
-        <div className="max-w-sm">
-          <h2 className="max-w-sm md:max-w-lg  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-          On Demand Rides,
-          </h2>
-          <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-          No Surpries
-          Hop on a ride instantly, no price surges ever. Customize your travel experience, whether you're headed around the block or across town. UNI keeps it smooth and affordable, always
-          Earn on Your Terms
-          </p>
-        </div>
-        <Image
-          src="/followers.png"
-          width={400}
-          height={500}
-          alt="linear demo image"
-          className="absolute right-10 -bottom-10 object-contain rounded-2xl"
-        />
-      </WobbleCard> */}
+      
     </div>
   );
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import { Loader } from '@googlemaps/js-api-loader';
 import { Button } from "@/components/ui/button";
 import { ModalBody, ModalContent, ModalFooter, ModalTrigger, Modal } from '@/components/ui/animated-modal';
@@ -10,6 +10,8 @@ import { Label } from '@/components/ui/label';
 import { motion, AnimatePresence } from 'framer-motion'
 import { Input } from '@/components/ui/input';
 import { Car, DollarSign, Train, Zap } from 'lucide-react';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import CoverFLow from '@/components/Home/coverFlow';
 
 interface Event {
   id: string;
@@ -50,8 +52,11 @@ export default function MapDemo() {
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null);
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null);
-  const [distance, setDistance] = useState<string | null>(null);
-  const [duration, setDuration] = useState<string | null>(null);
+  const [distance, setDistance] = useState<number | null>(null);
+  const [duration, setDuration] = useState<number | null>(null);
+  const [isFromVirginia, setIsFromVirginia] = useState<boolean | null>(null);
+  const [virginiaEvents, setVirginiaEvents] = useState<Event[]>([]);
+
   const mapRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<google.maps.Map | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -60,25 +65,24 @@ export default function MapDemo() {
   const [animateSavings, setAnimateSavings] = useState(false)
   const [calculatedCosts, setCalculatedCosts] = useState<{ uniTripCost: number | null, uberCost: number | null, savings: number | null } | null>(null)
 
-  const calculateUniTripCost = (minutes: number) => {
-    return 0.75 * minutes + 0.25
+  const calculateUniTripCost = (distance: number) => {
+    return 0.75 * distance + 0.25
   }
 
-  const calculateUberCost = (minutes: number) => {
-    return 1.25 * minutes + 1
+  const calculateUberCost = (distance: number) => {
+    return 1.25 * distance + 1
   }
 
-  const handleCalculateCosts = () => {
-    if (duration) {
-      const minutes = parseFloat(duration)
-      const uniTripCost = calculateUniTripCost(minutes)
-      const uberCost = calculateUberCost(minutes)
+  const handleCalculateCosts = useCallback(() => {
+    if (distance !== null) {
+      const uniTripCost = calculateUniTripCost(distance)
+      const uberCost = calculateUberCost(distance)
       const savings = uberCost - uniTripCost
       setCalculatedCosts({ uniTripCost, uberCost, savings })
       setAnimateSavings(true)
       setTimeout(() => setAnimateSavings(false), 1000)
     }
-  }
+  }, [distance])
 
   useEffect(() => {
     if (calculatedCosts?.savings !== null) {
@@ -88,17 +92,21 @@ export default function MapDemo() {
     }
   }, [calculatedCosts])
 
-  const setEventsdrilling = (newEvents: any) => {
-    setEvents(newEvents);
-  }
-
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await fetch('https://app.ticketmaster.com/discovery/v2/events?apikey=jeDSqSiRUMcWRAiZARvvODGYfAh8uHPG&size=200');
+        let url = 'https://app.ticketmaster.com/discovery/v2/events?apikey=jeDSqSiRUMcWRAiZARvvODGYfAh8uHPG&size=200';
+        if (isFromVirginia) {
+          url += '&stateCode=VA';
+        }
+        const response = await fetch(url);
         const data = await response.json();
-        setEvents(data._embedded.events);
-        setFilteredEvents(data._embedded.events);
+        const fetchedEvents = data._embedded.events;
+        setEvents(fetchedEvents);
+        setFilteredEvents(fetchedEvents);
+        if (isFromVirginia) {
+          setVirginiaEvents(fetchedEvents.slice(3, 20));
+        }
       } catch (err) {
         setError('Failed to fetch events. Please try again.');
       } finally {
@@ -106,7 +114,14 @@ export default function MapDemo() {
       }
     };
 
-    fetchEvents();
+    if (isFromVirginia !== null) {
+      fetchEvents();
+    }
+  }, [isFromVirginia]);
+
+  const setEventsdrilling = useCallback((newEvents: Event[]) => {
+    setEvents(newEvents);
+    setFilteredEvents(newEvents);
   }, []);
 
   useEffect(() => {
@@ -276,14 +291,13 @@ export default function MapDemo() {
                 directionsService.route(request, (result, status) => {
                   if (status === 'OK') {
                     directionsRenderer.setDirections(result);
-                    if (result?.routes[0]?.legs[0]?.distance?.text) {
-                      setDistance(result.routes[0].legs[0].distance.text);
+                    if (result?.routes[0]?.legs[0]?.distance?.value) {
+                      setDistance(result.routes[0].legs[0].distance.value / 1000); // Convert meters to kilometers
                     }
-                    if (result?.routes[0]?.legs[0]?.duration?.text) {
-                      const durationInMinutes = Math.round(result.routes[0].legs[0].duration.value / 60);
-                      setDuration(durationInMinutes.toString());
-                      handleCalculateCosts();
+                    if (result?.routes[0]?.legs[0]?.duration?.value) {
+                      setDuration(Math.round(result.routes[0].legs[0].duration.value / 60));
                     }
+                    handleCalculateCosts();
                     costCalculatorRef.current?.scrollIntoView({ behavior: 'smooth' });
                   }
                 });
@@ -343,19 +357,19 @@ export default function MapDemo() {
         }
       });
     });
-  }, [filteredEvents, userLocation]);
+  }, [filteredEvents, userLocation, handleCalculateCosts]);
 
-  const handleLocaleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleLocaleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedLocale(e.target.value);
     filterEvents(e.target.value, searchTerm);
-  };
+  }, [searchTerm]);
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleSearchChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(e.target.value);
     filterEvents(selectedLocale, e.target.value);
-  };
+  }, [selectedLocale]);
 
-  const filterEvents = (locale: string, search: string) => {
+  const filterEvents = useCallback((locale: string, search: string) => {
     let filtered = events;
     if (locale) {
       filtered = filtered.filter(event => 
@@ -368,7 +382,7 @@ export default function MapDemo() {
       );
     }
     setFilteredEvents(filtered);
-  };
+  }, [events]);
 
   const inputVariants = {
     blur: { scale: 1, opacity: 1 },
@@ -382,7 +396,19 @@ export default function MapDemo() {
 
   return (
     <div className="min-h--[90vh] mt-20 bg-black w-full p-4 text-blue-500">
+      {isFromVirginia === null && (
+        <div className="mb-4 text-center">
+          <p className="text-lg mb-2">Are you from Virginia?</p>
+          <div className="space-x-4">
+            <Button onClick={() => setIsFromVirginia(true)}>Yes</Button>
+            <Button onClick={() => setIsFromVirginia(false)}>No</Button>
+          </div>
+        </div>
+      )}
       <div className="mx-auto mt-4">
+        
+      
+        {isFromVirginia && <CoverFLow vevents={virginiaEvents} /> }
         <div className='flex flex-col sm:flex-row justify-between items-center mb-4 w-full'>
           <input
             ref={searchInputRef}
@@ -406,7 +432,6 @@ export default function MapDemo() {
             </ModalBody>
           </Modal>
         </div>
-      
         <div ref={mapRef} className="h-[calc(100vh-200px)] w-full rounded-lg overflow-hidden mb-4" />
 
         <div ref={costCalculatorRef}>
@@ -422,15 +447,15 @@ export default function MapDemo() {
               <div className="grid gap-10">
                 <div className="grid sm:grid-cols-2 gap-6">
                   <div>
-                    <Label htmlFor="duration" className="text-blue-200 mb-2 block text-sm uppercase tracking-wide">Duration (minutes)</Label>
+                    <Label htmlFor="distance" className="text-blue-200 mb-2 block text-sm uppercase tracking-wide">Distance (mi)</Label>
                     <motion.div variants={inputVariants} whileFocus="focus" initial="blur" animate="blur">
                       <Input
-                        id="duration"
+                        id="distance"
                         type="number"
-                        value={duration ?? ''}
-                        onChange={(e) => setDuration(e.target.value)}
+                        value={distance ?? ''}
+                        onChange={(e) => setDistance(parseFloat(e.target.value))}
                         className="bg-gray-700/50 border-blue-400/30 text-white text-lg rounded-lg focus:ring-2 focus:ring-blue-400 transition-all duration-300"
-                        placeholder="Enter duration"
+                        placeholder="Enter distance"
                       />
                     </motion.div>
                   </div>
@@ -441,10 +466,10 @@ export default function MapDemo() {
                   </div>
                 </div>
 
-                {distance && (
+                {distance !== null && (
                   <div className="text-center text-blue-200">
-                    <p>Total Distance: {distance}</p>
-                    <p>Total Duration: {duration} minutes</p>
+                    <p>Total Distance: {distance.toFixed(2)} mi</p>
+                    {duration !== null && <p>Total Duration: {duration} minutes</p>}
                   </div>
                 )}
 

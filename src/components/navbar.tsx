@@ -62,15 +62,9 @@ export default function Header() {
               <nav className="hidden md:flex space-x-6 items-center">
                 <Link href="/" className="text-white hover:text-sky-400 transition-colors">Home</Link>
                 <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link>
-                <Link href="/features" className="text-white hover:text-sky-400 transition-colors">Feature</Link>
-                <Link href="/faq" className="text-white hover:text-sky-400 transition-colors">FAQ</Link>
+            
                 <Link href="/events" className="text-white hover:text-sky-400 transition-colors">Events</Link>
-                <SignedOut>
-                  <SignInButton>
-                   <Button className="bg-sky-500 hover:bg-sky-600 text-white">Get Started</Button>
-                  </SignInButton>
-                 
-                </SignedOut>
+               
                 <SignedIn>
                   <UserButton />
                 </SignedIn>
@@ -106,15 +100,10 @@ export default function Header() {
                 >
           <Link href="/" className="text-white hover:text-sky-400 transition-colors">Home</Link>
                 <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link>
-                <Link href="/features" className="text-white hover:text-sky-400 transition-colors">Feature</Link>
-                <Link href="/faq" className="text-white hover:text-sky-400 transition-colors">FAQ</Link>
+               
+          
                 <Link href="/events" className="text-white hover:text-sky-400 transition-colors">Events</Link>
-                <SignedOut>
-                  <SignInButton>
-                   <Button className="bg-sky-500 hover:bg-sky-600 text-white">Get Started</Button>
-                  </SignInButton>
-                 
-                </SignedOut>
+             
                 <SignedIn>
                   <UserButton />
                 </SignedIn>
