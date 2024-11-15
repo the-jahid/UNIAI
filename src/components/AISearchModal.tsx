@@ -1,21 +1,22 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Button } from '@/components/ui/button'
-import { Card } from '@/components/ui/card'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Label } from '@/components/ui/label'
+import { useState } from "react"
+import { Button } from "@/components/ui/button"
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { MapPin, Calendar, Compass, Music, Palette, Theater, X } from 'lucide-react'
-import { AIEventSearch } from '@/lib/aiSearch'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import { Label } from "@/components/ui/label"
+import { Check, Calendar } from 'lucide-react'
+import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
+import { format } from "date-fns"
+import { AIEventSearch } from "@/lib/aiSearch"
 
 const states = [
   'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA',
@@ -25,200 +26,321 @@ const states = [
   'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
 ]
 
+const artists = [
+  'Taylor Swift', 'Beyoncé', 'Kendrick Lamar', 'Ariana Grande',
+  'Post Malone', 'Rod Wave', 'Tyler The Creator', 'GloRilla',
+  'Bruno Mars', 'Zach Bryan', 'Ken Carson', 'Chappell Roan',
+  'Queen', 'Michael Jackson', 'Morgan Wallen', 'Eminem',
+  'Playboi Carti', 'Travis Scott', 'Shaboozey', 'Future',
+  'Metro Boomin', 'Megan Thee Stallion', 'The Weeknd', 'Lil Baby',
+  'Bad Bunny', 'Billie Eilish', 'Rolling Stones', 'Led Zepelin',
+  'Doja Cat', 'Olivia Rodrigo', 'Harry Styles', 'Gunna',
+  'Young Thug', 'Sabrina Carpenter', 'Rihanna', 'Cardi B',
+  'Drake', 'Dua Lipa', 'SZA', 'J Balvin', 'Ed Sheeran',
+  'Justin Bieber', 'Lizzo', 'BTS',' Destroy Lonely', 'Jelly Roll'
+]
+
 const purposes = ['Dining', 'Entertainment', 'Relaxation', 'Shopping', 'Exploring']
-const experiences = ['Live Music', 'Sports', 'Art', 'Theater', 'None']
+const atmospheres = ['Casual', 'Romantic', 'Adventurous', 'Quiet', 'Festive']
+const companions = ['Solo', 'Family', 'Friends', 'Date', 'Children']
 
 interface AISearchModalProps {
   setEventsdrilling: (events: any) => void;
 }
-
 export default function Component({ setEventsdrilling }: AISearchModalProps) {
+  const [open, setOpen] = useState(false)
   const [step, setStep] = useState(1)
-  const { register, handleSubmit, watch, setValue } = useForm()
-  const [stars, setStars] = useState<{ x: number; y: number; opacity: number; size: number }[]>([])
+  const [selectedState, setSelectedState] = useState("")
+  const [selectedArtists, setSelectedArtists] = useState<string[]>([])
+  const [selectedPurpose, setSelectedPurpose] = useState("")
+  const [selectedAtmosphere, setSelectedAtmosphere] = useState("")
+  const [selectedCompanion, setSelectedCompanion] = useState("")
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null)
+  const [showResults, setShowResults] = useState(false)
 
-  useEffect(() => {
-    const newStars = Array.from({ length: 100 }, () => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      opacity: Math.random(),
-      size: Math.random() * 2 + 1,
-    }))
-    setStars(newStars)
-  }, [])
-
-  const onSubmit = async (data: any) => {
-    const result = await AIEventSearch(data)
-    setEventsdrilling(result)
+  const handleArtistSelection = (artist: string) => {
+    setSelectedArtists(prev => {
+      if (prev.includes(artist)) {
+        return prev.filter(a => a !== artist)
+      }
+      if (prev.length >= 3) {
+        return prev
+      }
+      return [...prev, artist]
+    })
   }
 
-  const fadeInOut = {
-    initial: { opacity: 0, y: 20 },
-    animate: { opacity: 1, y: 0 },
-    exit: { opacity: 0, y: -20 },
+  const getStepContent = () => {
+    switch (step) {
+      case 1:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">Select your state</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Choose the state you're currently in
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-5 gap-2 max-h-[400px] overflow-y-auto p-2">
+              {states.map((state) => (
+                <Button
+                  key={state}
+                  variant={selectedState === state ? "default" : "outline"}
+                  className={`w-full ${selectedState === state ? 'bg-blue-600 text-white' : 'bg-blue-900 text-white hover:bg-blue-800'}`}
+                  onClick={() => setSelectedState(state)}
+                >
+                  {state}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )
+      case 2:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">Select your favorite artists</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Choose 3 artists from the list below
+              </DialogDescription>
+            </DialogHeader>
+            <div className="grid grid-cols-3 gap-2 max-h-[400px] overflow-y-auto p-2">
+              {artists.map((artist) => (
+                <Button
+                  key={artist}
+                  variant={selectedArtists.includes(artist) ? "default" : "outline"}
+                  className={`w-full relative ${selectedArtists.includes(artist) ? 'bg-blue-600 text-white' : 'bg-blue-900 text-white hover:bg-blue-800'}`}
+                  onClick={() => handleArtistSelection(artist)}
+                  disabled={selectedArtists.length >= 3 && !selectedArtists.includes(artist)}
+                >
+                  {artist}
+                  {selectedArtists.includes(artist) && (
+                    <Check className="w-4 h-4 absolute right-2" />
+                  )}
+                </Button>
+              ))}
+            </div>
+          </div>
+        )
+      case 3:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">What brings you out today?</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Select the main purpose of your outing
+              </DialogDescription>
+            </DialogHeader>
+            <RadioGroup value={selectedPurpose} onValueChange={setSelectedPurpose}>
+              {purposes.map((purpose) => (
+                <div
+                  key={purpose}
+                  className="flex items-center space-x-2 rounded-lg border border-blue-600 p-4 cursor-pointer"
+                  onClick={() => setSelectedPurpose(purpose)}
+                >
+                  <RadioGroupItem value={purpose} id={purpose} className="border-blue-400 text-blue-400" />
+                  <Label htmlFor={purpose} className="text-white">{purpose}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )
+      case 4:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">What atmosphere suits your mood?</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Choose the vibe you're looking for
+              </DialogDescription>
+            </DialogHeader>
+            <RadioGroup value={selectedAtmosphere} onValueChange={setSelectedAtmosphere}>
+              {atmospheres.map((atmosphere) => (
+                <div
+                  key={atmosphere}
+                  className="flex items-center space-x-2 rounded-lg border border-blue-600 p-4 cursor-pointer"
+                  onClick={() => setSelectedAtmosphere(atmosphere)}
+                >
+                  <RadioGroupItem value={atmosphere} id={atmosphere} className="border-blue-400 text-blue-400" />
+                  <Label htmlFor={atmosphere} className="text-white">{atmosphere}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )
+      case 5:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">Who will be accompanying you?</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Select who you'll be spending time with
+              </DialogDescription>
+            </DialogHeader>
+            <RadioGroup value={selectedCompanion} onValueChange={setSelectedCompanion}>
+              {companions.map((companion) => (
+                <div
+                  key={companion}
+                  className="flex items-center space-x-2 rounded-lg border border-blue-600 p-4 cursor-pointer"
+                  onClick={() => setSelectedCompanion(companion)}
+                >
+                  <RadioGroupItem value={companion} id={companion} className="border-blue-400 text-blue-400" />
+                  <Label htmlFor={companion} className="text-white">{companion}</Label>
+                </div>
+              ))}
+            </RadioGroup>
+          </div>
+        )
+      case 6:
+        return (
+          <div className="grid gap-4">
+            <DialogHeader>
+              <DialogTitle className="text-white">When do you want to go?</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Select a date or choose 'Whenever'
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex justify-center space-x-4">
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant="outline" className="bg-blue-900 text-white border-blue-600 hover:bg-blue-800">
+                    <Calendar className="mr-2 h-4 w-4" />
+                    {selectedDate ? format(selectedDate, "PPP") : "Pick a date"}
+                  </Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0 bg-blue-900 border-blue-600">
+                  <CalendarComponent
+                    mode="single"
+                    selected={selectedDate ?? undefined}
+                    onSelect={(day) => setSelectedDate(day ?? null)}
+                    initialFocus
+                    className="bg-blue-900 text-white"
+                  />
+                </PopoverContent>
+              </Popover>
+              <Button
+                variant={selectedDate === null ? "default" : "outline"}
+                onClick={() => setSelectedDate(null)}
+                className={selectedDate === null ? 'bg-blue-600 text-white' : 'bg-blue-900 text-white border-blue-600 hover:bg-blue-800'}
+              >
+                Whenever
+              </Button>
+            </div>
+          </div>
+        )
+      default:
+        return null
+    }
+  }
+
+  const canProceed = () => {
+    switch (step) {
+      case 1:
+        return selectedState !== ""
+      case 2:
+        return selectedArtists.length === 3
+      case 3:
+        return selectedPurpose !== ""
+      case 4:
+        return selectedAtmosphere !== ""
+      case 5:
+        return selectedCompanion !== ""
+      case 6:
+        return true // Always allow proceeding from date selection
+      default:
+        return false
+    }
+  }
+
+  const handleSearch = async () => {
+    const searchData = {
+      state: selectedState,
+      artists: selectedArtists,
+      purpose: selectedPurpose,
+      atmosphere: selectedAtmosphere,
+      companion: selectedCompanion,
+      date: selectedDate ? format(selectedDate, "yyyy-MM-dd") : "Whenever"
+    }
+  
+    const result =await  AIEventSearch(searchData)
+    setEventsdrilling(result)
+    setShowResults(true)
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#000033] to-black p-4 flex items-center justify-center overflow-hidden relative">
-      {stars.map((star, index) => (
-        <div
-          key={index}
-          className="absolute bg-white rounded-full"
-          style={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            opacity: star.opacity,
-            animation: `twinkle ${Math.random() * 5 + 3}s infinite`,
-          }}
-        />
-      ))}
-      <Card className="w-full max-w-3xl bg-black/30 backdrop-blur-xl border-gray-800 overflow-hidden">
-        <div className="p-8">
-          {/* Progress Steps */}
-          <div className="flex justify-between mb-12 relative">
-            {[1, 2, 3, 4].map((number) => (
-              <div key={number} className="flex items-center relative z-10">
-                <motion.div
-                  className={`w-12 h-12 rounded-full flex items-center justify-center text-lg font-bold text-white ${
-                    step >= number ? 'bg-purple-600' : 'bg-gray-700'
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button variant="outline" className="bg-blue-600 text-white hover:bg-blue-700">Start AI Search</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[600px] bg-black text-white border-blue-600">
+        {!showResults ? (
+          <>
+            <div className="flex justify-between mb-8">
+              {[1, 2, 3, 4, 5, 6].map((stepNumber) => (
+                <div
+                  key={stepNumber}
+                  className={`h-2 w-full mx-1 rounded-full ${
+                    stepNumber === step
+                      ? "bg-blue-600"
+                      : stepNumber < step
+                      ? "bg-blue-400"
+                      : "bg-blue-900"
                   }`}
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: step === number ? 1.2 : 1 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {number}
-                </motion.div>
-              </div>
-            ))}
-            <div className="absolute top-1/2 left-0 w-full h-1 bg-gray-700 -translate-y-1/2" />
-            <motion.div
-              className="absolute top-1/2 left-0 h-1 bg-purple-600 -translate-y-1/2"
-              initial={{ width: '0%' }}
-              animate={{ width: `${((step - 1) / 3) * 100}%` }}
-              transition={{ duration: 0.5 }}
-            />
-          </div>
-
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-            <AnimatePresence mode="wait">
-              {step === 1 && (
-                <motion.div key="step1" {...fadeInOut} className="space-y-4">
-                  <h2 className="text-3xl font-bold text-white mb-6">Select your state</h2>
-                  <Select onValueChange={(value) => setValue('state', value)}>
-                    <SelectTrigger className="w-full bg-gray-800 border-gray-700 text-white">
-                      <SelectValue placeholder="Select a state" />
-                    </SelectTrigger>
-                    <SelectContent >
-                      {states.map((state) => (
-                        <SelectItem key={state} value={state} className="text-black">
-                          {state}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </motion.div>
-              )}
-
-              {step === 2 && (
-                <motion.div key="step2" {...fadeInOut} className="space-y-4">
-                  <h2 className="text-3xl font-bold text-white mb-6">What are you looking for?</h2>
-                  <RadioGroup onValueChange={(value) => setValue('lookingFor', value)}>
-                    <div className="grid grid-cols-3 gap-4">
-                      {[
-                        { value: 'event', label: 'Event', icon: Calendar },
-                        { value: 'place', label: 'Place to go', icon: MapPin },
-                        { value: 'either', label: 'Either', icon: Compass },
-                      ].map(({ value, label, icon: Icon }) => (
-                        <Label
-                          key={value}
-                          className="flex flex-col items-center justify-center p-6 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors text-white"
-                        >
-                          <RadioGroupItem value={value} className="sr-only" />
-                          <Icon className="w-8 h-8 mb-2" />
-                          <span className="text-lg">{label}</span>
-                        </Label>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </motion.div>
-              )}
-
-              {step === 3 && (
-                <motion.div key="step3" {...fadeInOut} className="space-y-4">
-                  <h2 className="text-3xl font-bold text-white mb-6">What brings you out today?</h2>
-                  <RadioGroup onValueChange={(value) => setValue('purpose', value)}>
-                    <div className="grid grid-cols-3 gap-4">
-                      {purposes.map((purpose) => (
-                        <Label
-                          key={purpose}
-                          className="flex flex-col items-center justify-center p-6 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors text-white"
-                        >
-                          <RadioGroupItem value={purpose.toLowerCase()} className="sr-only" />
-                          <span className="text-lg">{purpose}</span>
-                        </Label>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </motion.div>
-              )}
-
-              {step === 4 && (
-                <motion.div key="step4" {...fadeInOut} className="space-y-4">
-                  <h2 className="text-3xl font-bold text-white mb-6">Looking for any specific experiences?</h2>
-                  <RadioGroup onValueChange={(value) => setValue('experience', value)}>
-                    <div className="grid grid-cols-3 gap-4">
-                      {experiences.map((experience) => (
-                        <Label
-                          key={experience}
-                          className="flex flex-col items-center justify-center p-6 border border-gray-700 rounded-lg cursor-pointer hover:bg-gray-800/50 transition-colors text-white"
-                        >
-                          <RadioGroupItem value={experience.toLowerCase()} className="sr-only" />
-                          {experience === 'Live Music' && <Music className="w-8 h-8 mb-2" />}
-                          {experience === 'Sports' && <Compass className="w-8 h-8 mb-2" />}
-                          {experience === 'Art' && <Palette className="w-8 h-8 mb-2" />}
-                          {experience === 'Theater' && <Theater className="w-8 h-8 mb-2" />}
-                          {experience === 'None' && <X className="w-8 h-8 mb-2" />}
-                          <span className="text-lg">{experience}</span>
-                        </Label>
-                      ))}
-                    </div>
-                  </RadioGroup>
-                </motion.div>
-              )}
-            </AnimatePresence>
-
-            <div className="flex justify-between pt-8">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => setStep(step - 1)}
-                disabled={step === 1}
-                className="bg-gray-800 text-white border-gray-700 hover:bg-gray-700"
-              >
-                Previous
-              </Button>
-              {step < 4 ? (
-                <Button
-                  type="button"
-                  onClick={() => setStep(step + 1)}
-                  className="bg-purple-600 text-white hover:bg-purple-700"
-                >
-                  Next
-                </Button>
-              ) : (
-                <Button
-                  type="submit"
-                  className="bg-purple-600 text-white hover:bg-purple-700"
-                >
-                  Search
-                </Button>
-              )}
+                />
+              ))}
             </div>
-          </form>
-        </div>
-      </Card>
-    </div>
+            {getStepContent()}
+            <div className="flex justify-between mt-6">
+              <Button
+                variant="outline"
+                onClick={() => setStep((prev) => Math.max(1, prev - 1))}
+                disabled={step === 1}
+                className="bg-blue-900 text-white border-blue-600 hover:bg-blue-800"
+              >
+                Back
+              </Button>
+              <Button
+                onClick={() => {
+                  if (step === 6) {
+                    handleSearch()
+                  } else {
+                    setStep((prev) => prev + 1)
+                  }
+                }}
+                disabled={!canProceed()}
+                className="bg-blue-600 text-white hover:bg-blue-700"
+              >
+                {step === 6 ? "Search" : "Continue"}
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="text-center">
+            <DialogHeader>
+              <DialogTitle className="text-white">Search Complete</DialogTitle>
+              <DialogDescription className="text-blue-200">
+                Check the map for the search results.
+              </DialogDescription>
+            </DialogHeader>
+            <Button
+              onClick={() => {
+                setOpen(false)
+                setStep(1)
+                setShowResults(false)
+                setSelectedState("")
+                setSelectedArtists([])
+                setSelectedPurpose("")
+                setSelectedAtmosphere("")
+                setSelectedCompanion("")
+                setSelectedDate(null)
+              }}
+              className="mt-4 bg-blue-600 text-white hover:bg-blue-700"
+            >
+              Start New Search
+            </Button>
+          </div>
+        )}
+      </DialogContent>
+    </Dialog>
   )
 }

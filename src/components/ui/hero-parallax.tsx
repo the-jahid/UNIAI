@@ -115,12 +115,12 @@ export const Header = () => {
 <BackgroundLines>
   <div className="flex flex-col lg:flex-row items-center justify-center">
   <div className="relative mx-auto py-20 md:py-40 px-4 w-full lg:w-1/2">
-  <h1 className="text-2xl md:text-4xl lg:text-7xl font-bold text-white text-center lg:text-left">
+  <h1 className="text-4xl  lg:text-7xl font-bold text-white text-center lg:text-left">
     Explore <br /> Meet <br /> Commute
   </h1>
   
   <h4 className="text-white text-lg md:text-xl lg:text-3xl text-center lg:text-left mt-2">
-    Find Your Scene, Get Your Ride
+  Find Your Vibe, Get Your Ride
   </h4>
   
   <div className="flex justify-center lg:justify-start mt-6">
