@@ -388,7 +388,7 @@ export default function RideRequestWithEvents() {
   return (
     <>
    
-    <div className="min-h-screen bg-black text-white p-4 mt-20">
+    <div className="min-h-screen bg-black text-white p-4 mt-20 relative">
   
       <Card className="w-full max-w-8xl mx-auto bg-gray-800 shadow-xl">
         <CardHeader>

@@ -7,96 +7,96 @@ export function HeroParallaxDemo() {
 }
 export const products = [
   {
-    title: "Moonbeam",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/NtCT29f/67151.jpg",
+      "/andrew-knechel-gG6yehL64fo-unsplash.jpg",
   },
   {
-    title: "Cursor",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/TMF2FSw/aranxa-esteve-S5-DEUg2y-UVU-unsplash.jpg",
+      "/andreas-ronningen-S2YssLw97l4-unsplash.jpg",
   },
   {
-    title: "Rogue",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/bQSZG7Q/pablo-heimplatz-ZODc-Bk-Eohk8-unsplash.jpg",
+      "/anthony-delanoix-hzgs56Ze49s-unsplash (1).jpg",
   },
 
   {
-    title: "Editorially",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/RBTV2sW/dave-lastovskiy-Ryg-Id-Tavhk-Q-unsplash.jpg",
+      "/dave-lastovskiy-RygIdTavhkQ-unsplash (1).jpg",
   },
   {
     title: "Editrix AI",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/D8DgxQR/jorge-gordo-W2-UH8-Ld-D3-Tc-unsplash.jpg",
+      "/dave-lastovskiy-RygIdTavhkQ-unsplash (1).jpg",
   },
   {
-    title: "Pixel Perfect",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/XjN8FXB/aranxa-esteve-p-OXHU0-UEDcg-unsplash.jpg",
-  },
-
-  {
-    title: "Algochurn",
-    link: "#",
-    thumbnail:
-      "https://i.ibb.co.com/7YZfpMw/rachel-coyne-U7-HLz-MO4-SIY-unsplash.jpg",
-  },
-  {
-    title: "Aceternity UI",
-    link: "#",
-    thumbnail:
-      "https://i.ibb.co.com/NKsFtFr/marvin-meyer-IB5bld-weak-unsplash.jpg",
-  },
-  {
-    title: "Tailwind Master Kit",
-    link: "#",
-    thumbnail:
-      "https://i.ibb.co.com/8gybrkP/anthony-delanoix-hzgs56-Ze49s-unsplash.jpg",
-  },
-  {
-    title: "SmartBridge",
-    link: "#",
-    thumbnail:
-      "https://aceternity.com/images/products/thumbnails/new/smartbridge.png",
-  },
-  {
-    title: "Renderwork Studio",
-    link: "#",
-    thumbnail:
-      "https://i.ibb.co.com/VVpNr67/geert-pieters-Afg-Jp-WQH4lw-unsplash.jpg",
+      "/jacques-philippe-gollnick-2OcnCyCWHrI-unsplash.jpg",
   },
 
   {
-    title: "Creme Digital",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/YL60B5V/jade-masri-74tl-EYKgr-BE-unsplash.jpg",
+      "/jade-masri-74tlEYKgrBE-unsplash (1).jpg",
   },
   {
-    title: "Golden Bells Academy",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/MfZXmv4/yvette-de-wit-NYr-Visod-Q2-M-unsplash.jpg",
+      "/karina-lago-FKGqHjvxQZU-unsplash.jpg",
   },
   {
-    title: "Invoker Labs",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/yBBTZ56/susan-g-komen-3-day-qf-WMUXDc-N18-unsplash.jpg",
+      "/lindsey-bahia-Yas_6ngECJA-unsplash.jpg",
   },
   {
-    title: "E Free Invoice",
+    title: "",
     link: "#",
     thumbnail:
-      "https://i.ibb.co.com/W6g3YWH/borna-bevanda-a4-LLb-MYUj-E4-unsplash.jpg",
+      "/mitchell-orr---LyFIjXoFY-unsplash.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/nicholas-green-nPz8akkUmDI-unsplash.jpg",
+  },
+
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/samantha-gades-fIHozNWfcvs-unsplash (1).jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/samantha-gades-V_d6tUaniK8-unsplash.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/samantha-gades-XkBYYlZ4Ono-unsplash.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/yvette-de-wit-Kcx_YuUR-dw-unsplash.jpg",
   },
 ];

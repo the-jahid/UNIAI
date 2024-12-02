@@ -8,7 +8,8 @@ import FeaturesSectionDemo from "@/components/Home/Feature";
 import Footer from "@/components/Home/footer";
 
 import { HeroParallaxDemo } from "@/components/Home/newHero";
-import { WobbleCardDemo } from "@/components/Home/wobble";
+import AdvancedCarousel from "@/components/Home/wobble";
+
 
 
 export default function Home() {
@@ -17,7 +18,7 @@ export default function Home() {
          {/* <Hero /> */}
          <HeroParallaxDemo />
          <ContainerScrollDemo />
-         <WobbleCardDemo />
+         <AdvancedCarousel />
           {/* <GrandConference />  */}
           {/* <CardSpotlightDemo /> */}
           <FeaturesSectionDemo />

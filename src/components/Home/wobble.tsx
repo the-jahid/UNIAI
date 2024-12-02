@@ -1,76 +1,152 @@
-"use client";
-import Image from "next/image";
-import React from "react";
-import { WobbleCard } from "../ui/wobble-card";
+'use client'
 
-export function WobbleCardDemo() {
+import * as React from "react"
+import { motion, AnimatePresence } from "framer-motion"
+import { wrap } from "popmotion"
+
+const slides = [
+  {
+    title: "Discover Your World",
+    description: "Discover Events, New People, and Places to Go Near You",
+    image: "/2.png",
+    alt: "iPhone display showing a dirt bike rider"
+  },
+  {
+    title: "Match & Mingle",
+    description: "Tell it & You Get it: Get Matched Up With Events & Places to Go That Match Your Vibe",
+    image: "/4.png",
+    alt: "iPhone titanium frame"
+  },
+  {
+    title: "Make $100K Behind The Wheel",
+    description: "Get Instantly Paid 100% Commission For Driving People In Your Area Who Need Rides. Find Rides on The Map & Connect With Repeat Riders",
+    image: "/6.png",
+    alt: "iPhone gaming capabilities"
+  },
+  {
+    title: "Luxury Rides at Budget Prices",
+    description: "Save 10-15% Compared to Uber. Make The Experience Personalized To Your Settings. Stay Safe with Each Ride Thanks To Same Gender Matching",
+    image: "/4A413952-4DDC-4C22-92BD-309488D854E5.png",
+    alt: "iPhone gaming capabilities"
+  }
+]
+
+export default function AdvancedCarousel() {
+  const [[page, direction], setPage] = React.useState([0, 0])
+  const [progress, setProgress] = React.useState(0)
+
+  const index = wrap(0, slides.length, page)
+
+  const paginate = (newDirection: number) => {
+    setPage([page + newDirection, newDirection])
+  }
+
+  React.useEffect(() => {
+    const timer = setInterval(() => {
+      paginate(1)
+    }, 6000)
+
+    return () => clearInterval(timer)
+  }, [page])
+
+  React.useEffect(() => {
+    const interval = setInterval(() => {
+      setProgress((prevProgress) => {
+        if (prevProgress >= 100) {
+          return 0
+        }
+        return prevProgress + (100 / (6000 / 100))
+      })
+    }, 100)
+
+    return () => clearInterval(interval)
+  }, [])
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 max-w-7xl mx-auto w-full  relative">
-
-<WobbleCard
-  containerClassName="col-span-1 lg:col-span-2 h-full bg-black min-h-[500px] lg:min-h-[300px]   rounded-lg shadow-lg relative overflow-hidden"
-  className=""
->
-  <div className="w-full lg:max-w-md">
-    <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-      Discover Your World
-    </h2>
-    <p className="mt-4 text-left text-sm md:text-base lg:text-lg text-neutral-200">
-      With UNI, your digital explorations turn into real-life adventures. Our interactive discovery map connects you to people, places, and events nearby or across the globe. Express yourself and explore with ease!
-    </p>
-  </div>
-  <Image
-    src="/38801B08-60EB-4140-A1D2-AE6670390283.png"
-    width={400}
-    height={400}
-    alt="linear demo image"
-    className=" lg:absolute lg:-right-[0%] bottom-0   filter lg:-z-20 object-contain rounded-2xl"
-  />
-</WobbleCard>
-      <WobbleCard containerClassName="col-span-1 min-h-[300px]">
-        <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-        Match & Mingle
-        </h2>
-        <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-        UNI does the magic, finding events, people, and job opportunities that are perfectly tailored to you. No more endless scrolling-just perfect matches!
-       
-        </p>
-        
-      </WobbleCard>
-      <WobbleCard containerClassName="col-span-1  min-h-[200px]">
-        <h2 className="max-w-80  text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-        Make $100K+ Behind The Wheel
-        </h2>
-        <p className="mt-4 max-w-[26rem] text-left  text-base/6 text-neutral-200">
-        Unlock the potential to earn $100k by driving. Join our platform to find lucrative driving opportunities and maximize your earnings.
-       
-        </p>
-
-        
-      </WobbleCard>
-      <WobbleCard
-        containerClassName="col-span-1 lg:col-span-2 h-full bg-black min-h-[500px] lg:min-h-[200px]"
-        className=""
-      >
-        <div className="max-w-xs">
-          <h2 className="text-left text-balance text-base md:text-xl lg:text-3xl font-semibold tracking-[-0.015em] text-white">
-          Luxury Rides, at Budget Prices
-          </h2>
-          <p className="mt-4 text-left  text-base/6 text-neutral-200">
-          Once you’ve nailed down your dream destination or just need a quick lift, booking your ride is as smooth as butter! You can tweak all the fancy settings to suit your vibe. Each journey is packed with a treasure trove of safety features, and guess what? Compared to Uber, our rides are a wallet-friendly 15% cheaper on average
-
-          </p>
+    <div className="bg-black items-center h-[70vh] md:h-screen flex flex-col p-4 sm:p-6 md:p-8 lg:p-12 overflow-hidden">
+      <div className="w-full max-w-7xl relative">
+        <AnimatePresence initial={false} custom={direction}>
+          <motion.div
+            key={page}
+            custom={direction}
+            variants={variants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            transition={{
+              x: { type: "spring", stiffness: 300, damping: 30 },
+              opacity: { duration: 0.2 }
+            }}
+            className="absolute w-full"
+          >
+            <div className="flex flex-col gap-4 sm:gap-6 text-white p-4 sm:p-6 md:p-8 mt-8">
+              <div className="space-y-2 sm:space-y-3 md:space-y-4">
+                <motion.h2
+                  className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.2 }}
+                >
+                  {slides[index].title}
+                </motion.h2>
+                <motion.p
+                  className="text-lg sm:text-xl md:text-2xl  text-gray-300"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4 }}
+                >
+                  {slides[index].description}
+                </motion.p>
+              </div>
+              <div className="relative aspect-[10/9] md:aspect-[25/9] w-full max-w-6xl mx-auto">
+                <div className="absolute inset-0 rounded-[24px] sm:rounded-[32px] md:rounded-[40px] lg:rounded-[48px] overflow-hidden border-4 sm:border-6 md:border-8 border-white">
+                  <motion.img
+                    src={slides[index].image}
+                    alt={slides[index].alt}
+                    className="w-full h-full object-cover"
+                    initial={{ scale: 1.1 }}
+                    animate={{ scale: 1 }}
+                    transition={{ duration: 6 }}
+                  />
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+      <div className="w-full max-w-7xl mt-4 sm:mt-6 md:mt-8">
+        <div className="bg-white/30 h-1 rounded-full overflow-hidden">
+          <motion.div
+            className="h-full bg-white"
+            style={{ width: `${progress}%` }}
+            initial={{ width: "0%" }}
+            animate={{ width: `${progress}%` }}
+            transition={{ duration: 0.1 }}
+          />
         </div>
-        <Image
-          src="/4A413952-4DDC-4C22-92BD-309488D854E5.png"
-          width={600}
-          height={300}
-          alt="linear demo image"
-          className="lg:absolute  lg:-right-[0%]  filter bottom-0 object-contain rounded-2xl -z-20"
-        />
-      </WobbleCard>
-     
-      
+      </div>
     </div>
-  );
+  )
 }
+
+const variants = {
+  enter: (direction: number) => {
+    return {
+      x: direction > 0 ? '100%' : '-100%',
+      opacity: 0
+    }
+  },
+  center: {
+    zIndex: 1,
+    x: 0,
+    opacity: 1
+  },
+  exit: (direction: number) => {
+    return {
+      zIndex: 0,
+      x: direction < 0 ? '100%' : '-100%',
+      opacity: 0
+    }
+  }
+}
+
