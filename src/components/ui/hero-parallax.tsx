@@ -122,7 +122,8 @@ export const Header = () => {
   <h4 className="text-white text-lg md:text-xl lg:text-3xl text-center lg:text-left mt-2">
   Find Your Vibe, Get Your Ride
   </h4>
-  
+
+ 
   <div className="flex justify-center lg:justify-start mt-6">
     <Link href={'/events'} className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-medium text-white transition duration-300 ease-out border-2 border-blue-500 rounded-full shadow-md group">
       <span className="absolute inset-0 flex items-center justify-center w-full h-full text-blue-500 duration-300 -translate-x-full bg-white group-hover:translate-x-0 ease">
@@ -168,7 +169,7 @@ export const Header = () => {
         dragElastic={0.1}
       >
         <Image
-          src="/First-start-1-1100x843.png"
+          src="/Website_Images_-removebg-preview.png"
           width={600}
           height={600}
           alt="UNI App Screenshot"

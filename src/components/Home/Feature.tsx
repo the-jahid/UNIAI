@@ -12,9 +12,12 @@ const FeaturesSectionDemo = () => {
           UNI opens you a world of endless possibilities of activities and things to do, without breaking the bank!
         </p>
       </div>
-
+     
+      
+      
       <div className="mt-12 rounded-md dark:border-neutral-800 w-full flex justify-center items-center">
         <Globe className="md:-right-10 -bottom-50 md:-bottom-72" />
+        
       </div>
     </div>
   );

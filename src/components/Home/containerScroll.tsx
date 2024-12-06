@@ -23,10 +23,10 @@ export function ContainerScrollDemo() {
         }
       >
         <Image
-          src={`/2-2.png`}
+          src={`/12.png`}
           alt="hero"
-          height={720}
-          width={1400}
+          height={800}
+          width={900}
           className="mx-auto rounded-2xl object-cover h-full object-left-top"
           draggable={false}
         />

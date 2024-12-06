@@ -8,6 +8,7 @@ import FeaturesSectionDemo from "@/components/Home/Feature";
 import Footer from "@/components/Home/footer";
 
 import { HeroParallaxDemo } from "@/components/Home/newHero";
+import Waitlist from "@/components/Home/waitlist";
 import AdvancedCarousel from "@/components/Home/wobble";
 
 
@@ -21,6 +22,7 @@ export default function Home() {
          <AdvancedCarousel />
           {/* <GrandConference />  */}
           {/* <CardSpotlightDemo /> */}
+          <Waitlist />
           <FeaturesSectionDemo />
           {/* <Coverflow /> */}
           {/* <Marketing /> */}

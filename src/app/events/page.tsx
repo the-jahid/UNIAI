@@ -9,15 +9,6 @@ import { Label } from "@/components/ui/label"
 import { motion, AnimatePresence } from 'framer-motion'
 import { Car, DollarSign, Train, Clock, MapPin } from 'lucide-react'
 import CoverFlow from '@/components/Home/coverFlow'
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { cn } from '@/lib/utils'
 import AISearchModal from '@/components/AISearchModal'
 
 interface Event {
@@ -46,6 +37,7 @@ interface RideOption {
 export default function RideRequestWithEvents() {
   const [userLocation, setUserLocation] = useState<google.maps.LatLngLiteral | null>(null)
   const [selectedEvent, setSelectedEvent] = useState<Event | null>(null)
+  const [customDestination, setCustomDestination] = useState<google.maps.LatLngLiteral | null>(null)
   const [distance, setDistance] = useState<number | null>(null)
   const [duration, setDuration] = useState<number | null>(null)
   const [events, setEvents] = useState<Event[]>([])
@@ -68,11 +60,16 @@ export default function RideRequestWithEvents() {
     { name: 'Premier', icon: <Car className="w-6 h-6" />, eta: '7 mins away', price: 583.74, description: 'Comfortable sedans, top-quality drivers' },
   ]
 
+  useEffect(() => {
+    if (isfromVirginia && mapInstanceRef.current) {
+      const virginiaCoordinates = { lat: 37.4316, lng: -78.6569 };
+      mapInstanceRef.current.setCenter(virginiaCoordinates);
+      mapInstanceRef.current.setZoom(7);
+    }
+  }, [isfromVirginia]);
   const eventsDrilling = (newEvents: Event[]) => {
-
-   
+ 
     setEvents(newEvents)
-   
   }
 
   useEffect(() => {
@@ -99,9 +96,7 @@ export default function RideRequestWithEvents() {
       }
     };
 
-    
-      fetchEvents();
-   
+    fetchEvents();
   }, []);
 
   useEffect(() => {
@@ -113,15 +108,13 @@ export default function RideRequestWithEvents() {
         const data = await response.json();
         const fetchedEvents = data._embedded.events;
         setVirginiaEvents(fetchedEvents.slice(3, 20));
-      
-       
       } catch (err) {
         setError('Failed to fetch events. Please try again.');
       } finally {
         setLoading(false);
       }
     };
-      virginiaFetchEvents();
+    virginiaFetchEvents();
   }, [isfromVirginia])
 
   useEffect(() => {
@@ -262,6 +255,10 @@ export default function RideRequestWithEvents() {
         marker.addListener('click', () => {
           infoWindow.open(map, marker)
           setSelectedEvent(event)
+          setCustomDestination(null)
+          if (destinationInputRef.current) {
+            destinationInputRef.current.value = event._embedded.venues[0].name
+          }
         })
 
         google.maps.event.addListenerOnce(infoWindow, 'domready', () => {
@@ -323,6 +320,10 @@ export default function RideRequestWithEvents() {
       }
 
       setupAutocomplete(originInputRef, setUserLocation)
+      setupAutocomplete(destinationInputRef, (location) => {
+        setCustomDestination(location)
+        setSelectedEvent(null)
+      })
     })
   }, [events, userLocation])
 
@@ -340,17 +341,24 @@ export default function RideRequestWithEvents() {
   }, [])
 
   const calculateCost = useCallback(() => {
-    if (userLocation && selectedEvent) {
+    if (userLocation && (selectedEvent || customDestination)) {
       const directionsService = new google.maps.DirectionsService()
       const directionsRenderer = new google.maps.DirectionsRenderer()
       directionsRenderer.setMap(mapInstanceRef.current!)
 
-      const destination = {
-        lat: parseFloat(selectedEvent._embedded.venues[0].location.latitude),
-        lng: parseFloat(selectedEvent._embedded.venues[0].location.longitude),
+      const destination = selectedEvent
+        ? {
+            lat: parseFloat(selectedEvent._embedded.venues[0].location.latitude),
+            lng: parseFloat(selectedEvent._embedded.venues[0].location.longitude),
+          }
+        : customDestination
+
+      if (!destination) {
+        alert('Please set your destination first.');
+        return;
       }
 
-      const request = {
+      const request: google.maps.DirectionsRequest = {
         origin: userLocation,
         destination: destination,
         travelMode: google.maps.TravelMode.DRIVING
@@ -369,9 +377,10 @@ export default function RideRequestWithEvents() {
         }
       })
     } else {
-      alert('Please set your location and select an event first.')
+      alert('Please set your location and destination first.')
     }
-  }, [userLocation, selectedEvent])
+  }, [
+userLocation, selectedEvent, customDestination])
 
   const cardVariants = {
     hidden: { opacity: 0, scale: 0.8 },
@@ -387,106 +396,107 @@ export default function RideRequestWithEvents() {
 
   return (
     <>
-   
-    <div className="min-h-screen bg-black text-white p-4 mt-20 relative">
-  
-      <Card className="w-full max-w-8xl mx-auto bg-gray-800 shadow-xl">
-        <CardHeader>
-          <CardTitle className="text-3xl font-bold text-center text-blue-400">Find Your Vibe, Book a Ride</CardTitle>
-          <p className='text-white font-semibold text-center' >Estimate your trip cost</p>
-        </CardHeader>
-        <CardContent className='  flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 items-stretch'>
-          <div className="space-y-4 flex-1">
-          <div className="text-center my-4">
-  <p className="text-lg font-semibold text-white mb-2">Are you from Virginia?</p>
-  <div className="flex justify-center space-x-4">
-    <button
-      onClick={() => setIsfromVirginia(true)}
-      className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
-    >
-      YES
-    </button>
-    <button
-      onClick={() => setIsfromVirginia(false)}
-      className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
-    >
-      NO
-    </button>
-  </div>
-</div>
-            <div>
-              <Label htmlFor="origin" className="text-sm font-medium text-gray-300">Enter location</Label>
-              <Input
-                id="origin"
-                ref={originInputRef}
-                type="text"
-                placeholder="Enter your location"
-                className="w-full mt-1 bg-gray-700 text-white border-gray-600"
-              />
-            </div>
-            <div>
-              <Label htmlFor="destination" className="text-sm font-medium text-gray-300">Enter destination</Label>
-              <Input
-                id="destination"
-                ref={destinationInputRef}
-                type="text"
-                placeholder="Enter your destination"
-                className="w-full mt-1 bg-gray-700 text-white border-gray-600"
-                value={selectedEvent ? selectedEvent._embedded.venues[0].name : ''}
-                readOnly
-              />
-            </div>
-            <Button onClick={calculateCost} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
-              Calculate cost
-            </Button>
-           <AISearchModal setEventsdrilling={eventsDrilling} />
-
-          </div>
-
-          <AnimatePresence>
-            {showCostCalculator && (
-              <motion.div
-                initial="hidden"
-                animate="visible"
-                exit="hidden"
-                variants={cardVariants}
-                className="flex-1 bg-gray-700 p-4 rounded-lg text-white"
-                ref={costCalculatorRef}
-              >
-                <h3 className="text-lg font-semibold mb-2 text-blue-400">Trip Details</h3>
-                <div className="space-y-4">
-                  <div className="flex items-center text-sm">
-                    <MapPin className="w-5 h-5 mr-2 text-blue-400" />
-                    <span>Total Distance: {distance ? `${(distance * 0.621371).toFixed(2)} miles` : 'Calculating...'}</span>
-                  </div>
-                  <div className="flex items-center text-sm">
-                    <Clock className="w-5 h-5 mr-2 text-blue-400" />
-                    <span>Estimated Duration: {duration ? `${duration} minutes` : 'Calculating...'}</span>
-                  </div>
-                  <ComparisonItem
-                    icon={<DollarSign className="w-5 h-5 text-green-400" />}
-                    label="Total Cost"
-                    uniValue={uniCost}
-                    uberValue={uberCost}
-                  />
-                  <ComparisonItem
-                    icon={<Car className="w-5 h-5 text-purple-400" />}
-                    label="Driver Earnings"
-                    uniValue={uniDriverEarnings}
-                    uberValue={uberDriverEarnings}
-                  />
+      <div className="min-h-screen bg-black text-white p-4 mt-20">
+        <Card className="w-full max-w-8xl mx-auto bg-gray-800 shadow-xl">
+          <CardHeader>
+            <CardTitle className="text-3xl font-bold text-center text-blue-400">Find Your Vibe, Book a Ride</CardTitle>
+            <p className='text-white font-semibold text-center' >Estimate your trip cost</p>
+          </CardHeader>
+          <CardContent className='flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-4 items-stretch'>
+            <div className="space-y-4 flex-1">
+              <div className="text-center my-4">
+                <p className="text-lg font-semibold text-white mb-2">Are you from Virginia?</p>
+                <div className="flex justify-center space-x-4">
+                  <button
+                    onClick={() => setIsfromVirginia(true)}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition duration-300"
+                  >
+                    YES
+                  </button>
+                  <button
+                    onClick={() => setIsfromVirginia(false)}
+                    className="px-4 py-2 bg-red-500 text-white rounded-lg shadow-md hover:bg-red-600 transition duration-300"
+                  >
+                    NO
+                  </button>
                 </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
+              </div>
+              <div>
+                <Label htmlFor="origin" className="text-sm font-medium text-gray-300">Enter location</Label>
+                <Input
+                  id="origin"
+                  ref={originInputRef}
+                  type="text"
+                  placeholder="Enter your location"
+                  className="w-full mt-1 bg-gray-700 text-white border-gray-600"
+                />
+              </div>
+              <div>
+                <Label htmlFor="destination" className="text-sm font-medium text-gray-300">Enter destination</Label>
+                <Input
+                  id="destination"
+                  ref={destinationInputRef}
+                  type="text"
+                  placeholder="Enter your destination"
+                  className="w-full mt-1 bg-gray-700 text-white border-gray-600"
+                  onChange={(e) => {
+                    if (e.target.value === '') {
+                      setSelectedEvent(null)
+                      setCustomDestination(null)
+                    }
+                  }}
+                />
+              </div>
+              <Button onClick={calculateCost} className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                Calculate cost
+              </Button>
+              <AISearchModal setEventsdrilling={eventsDrilling} />
+            </div>
 
-          <div ref={mapRef} className="h-[300px] lg:min-h-[60vh] lg:h-auto w-full rounded-lg my-4 lg:flex-1 order-first lg:order-last" />
-        </CardContent>
-      </Card>
-      {isfromVirginia && <CoverFlow vevents={virginiaEvents} />}
-      {loading && <p className="text-center text-gray-400 mt-4">Loading events...</p>}
-      {error && <p className="text-center text-red-400 mt-4">{error}</p>}
-    </div>
+            <AnimatePresence>
+              {showCostCalculator && (
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  exit="hidden"
+                  variants={cardVariants}
+                  className="flex-1 bg-gray-700 p-4 rounded-lg text-white"
+                  ref={costCalculatorRef}
+                >
+                  <h3 className="text-lg font-semibold mb-2 text-blue-400">Trip Details</h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center text-sm">
+                      <MapPin className="w-5 h-5 mr-2 text-blue-400" />
+                      <span>Total Distance: {distance ? `${(distance * 0.621371).toFixed(2)} miles` : 'Calculating...'}</span>
+                    </div>
+                    <div className="flex items-center text-sm">
+                      <Clock className="w-5 h-5 mr-2 text-blue-400" />
+                      <span>Estimated Duration: {duration ? `${duration} minutes` : 'Calculating...'}</span>
+                    </div>
+                    <ComparisonItem
+                      icon={<DollarSign className="w-5 h-5 text-green-400" />}
+                      label="Total Cost"
+                      uniValue={uniCost}
+                      uberValue={uberCost}
+                    />
+                    <ComparisonItem
+                      icon={<Car className="w-5 h-5 text-purple-400" />}
+                      label="Driver Earnings"
+                      uniValue={uniDriverEarnings}
+                      uberValue={uberDriverEarnings}
+                    />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            <div ref={mapRef} className="h-[300px] lg:min-h-[60vh] lg:h-auto w-full rounded-lg my-4 lg:flex-1 order-first lg:order-last" />
+          </CardContent>
+        </Card>
+        {isfromVirginia && <CoverFlow vevents={virginiaEvents} />}
+        {loading && <p className="text-center text-gray-400 mt-4">Loading events...</p>}
+        {error && <p className="text-center text-red-400 mt-4">{error}</p>}
+      </div>
     </>
   )
 }
@@ -522,3 +532,4 @@ function ComparisonItem({ icon, label, uniValue, uberValue }: ComparisonItemProp
     </div>
   )
 }
+
