@@ -163,7 +163,7 @@ export const Header = () => {
         dragElastic={0.1}
       >
         <Image
-          src="/Website_Images_-removebg-preview.png"
+          src="/freepik_br_12000575-0c2a-4ee4-a60a-bcfdeca6486e.png"
           width={600}
           height={600}
           alt="UNI App Screenshot"

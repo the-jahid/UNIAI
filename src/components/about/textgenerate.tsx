@@ -14,7 +14,7 @@ At UNI, we believe in fairness, freedom, and fun. From the moment you open the a
 export function AboutHero() {
   return <div className="relative flex flex-col lg:flex-row justify-center items-center text-center p-10 lg:p-20">
   <Image 
-    src={'/Website_Images_-removebg-preview.png'} 
+    src={'/freepik_br_12000575-0c2a-4ee4-a60a-bcfdeca6486e.png'} 
     width={500}
     height={400}
     alt="about_image"
