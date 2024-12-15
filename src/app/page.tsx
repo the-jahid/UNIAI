@@ -16,17 +16,13 @@ import AdvancedCarousel from "@/components/Home/wobble";
 export default function Home() {
   return (
       <div>
-         {/* <Hero /> */}
+        
          <HeroParallaxDemo />
          <ContainerScrollDemo />
          <AdvancedCarousel />
-          {/* <GrandConference />  */}
-          {/* <CardSpotlightDemo /> */}
           <Waitlist />
           <FeaturesSectionDemo />
-          {/* <Coverflow /> */}
-          {/* <Marketing /> */}
-          {/* <LampDemo /> */}
+        
           <FAQ />
         <Footer />
       </div>

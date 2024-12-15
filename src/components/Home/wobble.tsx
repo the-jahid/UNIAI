@@ -9,25 +9,20 @@ const slides = [
     title: "Discover Your World",
     description: "Discover Events, New People, and Places to Go Near You",
     image: "/2.png",
-    alt: "iPhone display showing a dirt bike rider"
+    alt: "discover"
   },
   {
     title: "Match & Mingle",
     description: "Tell it & You Get it: Get Matched Up With Events & Places to Go That Match Your Vibe",
     image: "/4.png",
-    alt: "iPhone titanium frame"
+    alt: "m&m"
   },
+  
   {
-    title: "Make $100K Behind The Wheel",
-    description: "Get Instantly Paid 100% Commission For Driving People In Your Area Who Need Rides. Find Rides on The Map & Connect With Repeat Riders",
-    image: "/6.png",
-    alt: "iPhone gaming capabilities"
-  },
-  {
-    title: "Luxury Rides at Budget Prices",
-    description: "Save 10-15% Compared to Uber. Make The Experience Personalized To Your Settings. Stay Safe with Each Ride Thanks To Same Gender Matching",
-    image: "/4A413952-4DDC-4C22-92BD-309488D854E5.png",
-    alt: "iPhone gaming capabilities"
+    title: "Know Your Crowd Before You Go",
+    description: "See who's attending and your compatibility score with each person. Connect with people who share your interests, go to your school, or match your vibe",
+    image: "/onesnew.jpg",
+    alt: "know"
   }
 ]
 

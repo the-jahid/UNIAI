@@ -13,7 +13,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { BackgroundLines } from "./background-lines";
 import { Button } from "./button";
-
+import { Apple, AppleIcon, PlaySquare } from "lucide-react";
+import { RiAppleLine } from "react-icons/ri";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
 export const HeroParallax = ({
   products,
 }: {
@@ -116,21 +118,24 @@ export const Header = () => {
   <div className="flex flex-col lg:flex-row items-center justify-center">
   <div className="relative mx-auto py-20 md:py-40 px-4 w-full lg:w-1/2 z-50">
   <h1 className="text-4xl  lg:text-7xl font-bold text-white text-center lg:text-left">
-    Explore <br /> Meet <br /> Commute
+  Discover <br /> Connect <br /> Experience
   </h1>
   
   <h4 className="text-white text-lg md:text-xl lg:text-3xl text-center lg:text-left mt-2">
-  Find Your Vibe, Get Your Ride
+  Find What’s Moving. See Who’s Going
   </h4>
 
  
-  <div className="flex justify-center lg:justify-start mt-6 ">
-    <Link href={'/events'} className=" px-6 py-3 font-medium text-white  border-2 border-blue-500 rounded-full  ">
-     
-      
-      <span >Try Out our Beta</span>
-    </Link>
-  </div>
+  <div className="flex flex-col sm:flex-row justify-center lg:justify-start mt-6 space-y-4 sm:space-y-0 sm:space-x-4">
+      <button className="px-6 py-3 font-medium text-white border-2 border-blue-500 rounded-full flex items-center justify-center space-x-2 hover:bg-blue-500 transition-colors duration-300">
+        <RiAppleLine />
+        <span>Coming Soon To App Store </span>
+      </button>
+      <button className="px-6 py-3 font-medium text-white border-2 border-blue-500 rounded-full flex items-center justify-center space-x-2 hover:bg-blue-500 transition-colors duration-300">
+      <IoLogoGooglePlaystore />
+        <span>Coming Soon to Play Store</span>
+      </button>
+    </div>
 </div>
     <motion.div
       className="w-full lg:w-1/2 relative mt-10 lg:mt-0"

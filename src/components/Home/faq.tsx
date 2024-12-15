@@ -7,15 +7,15 @@ import { ChevronDown } from 'lucide-react'
 const faqs = [
   {
     question: "What makes UNI so special?",
-    answer: "UNI is the magical platform you've been dreaming of! It's like a treasure map for discovering fresh hangouts and awesome people, all thanks to its snazzy, always-fresh discovery map. But wait, there's more! With its matchmaking wizard, you'll be connected to your perfect match faster than you can say 'swipe right!' And guess what? You can book your ride to your match or hotspot right from the app! It's all the fun in one fabulous place!"
+    answer: "Think of UNI as having a friend who knows about every event, concert, and hot spot in your city, but with next-level precision. Our discovery map shows you everything happening around you in real-time, while our smart guest lists let you see exactly who's going and how well you'll vibe with them based on shared interests and connections. Plus, you can just ask our Experience Engine to find exactly what you're looking for, like 'rooftop bars with a college crowd tonight' or 'concerts under $50 this weekend' - no more FOMO, no more wrong scenes"
   },
   {
-    question: "Why ride UNI?",
-    answer: "Picture this: a magical button that whisks you away to any destination, all while you enjoy a VIP experience tailored just for you! And guess what? This fancy ride will only cost you about 25% less than an Uber, and your driver pockets all the cash. No need to daydream—this is the UNI way!"
+    question: "Is UNI free?",
+    answer: "Yes! UNI is completely free to use. Find events, discover places, and connect with people - all at no cost."
   },
   {
-    question: "Why drive UNI?",
-    answer: "Driving with UNI is like finding a treasure chest of cash! You're the captain of your own ship—set your own hours, pick your own gigs from our live discovery map, or let our magical algorithm serve you the juiciest opportunities. Plus, our matchmaking wizard is like your personal assistant, hooking you up with the gigs that fit you like a glove! And the cherry on top? You pocket 100% of your fares instead of the measly 40-50% that Uber drivers settle for."
+    question: "How is UNI different from other social/event apps? ",
+    answer: "While other apps just show you events, UNI shows you everything happening around you AND helps you find your perfect crowd. Our AI-powered discovery makes finding the right scene as easy as asking 'where should I go tonight?'"
   },
   {
     question: "How do I sign up?",
