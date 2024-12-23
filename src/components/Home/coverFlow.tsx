@@ -76,13 +76,7 @@ export default function CoverFlow({ vevents }: CoverFlowProps) {
               whileHover={{ y: -5 }}
             >
               <div className="relative h-48 sm:h-56">
-                <Image
-                  src={event.images[0].url}
-                  layout="fill"
-                  objectFit="cover"
-                  alt={event.name}
-                  className="rounded-t-lg"
-                />
+                
                 <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
                   <h3 className="text-white text-xl sm:text-2xl font-bold text-center px-4">
                     {event.name}

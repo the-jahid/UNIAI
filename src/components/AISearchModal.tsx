@@ -12,6 +12,9 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
+import { PlaceholdersAndVanishInput } from "./ui/placeholders-and-vanish-input"
+import CoverFlow from "./Home/coverFlow"
+import { FlipWords } from "./ui/flip-words"
 
 interface AISearchModalProps {
   setEventsdrilling: (events: Event[]) => void
@@ -120,14 +123,28 @@ const chain = RunnableSequence.from([
   parser
 ])
 
-export default function AISearchModal({ setEventsdrilling }: AISearchModalProps) {
+export default function AISearchModal() {
   const [userText, setUserText] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
   const [events, setEvents] = useState<Event[]>([])
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault()
+  const words = ["exciting", "popular", "upcoming", "trending", "unmissable"];
+  // placeholders and vanish input
+  const placeholders = [
+ "Music festivals in Europe next summer?",
+"Tech conferences in Silicon Valley in 2024?",
+"Upcoming art exhibitions in New York?",
+"Food festivals in Asia in 2025?",
+"Sports events in Australia next year?",
+  ];
+ 
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+  };
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('hello world')
     setIsLoading(true)
     try {
       const response = await chain.invoke({
@@ -135,97 +152,55 @@ export default function AISearchModal({ setEventsdrilling }: AISearchModalProps)
         format_instructions: parser.getFormatInstructions(),
       })
       setEvents(response)
-      setEventsdrilling(response)
+      
     } catch (error) {
       console.error('Error:', error)
     }
     setIsLoading(false)
-  }
+  };
 
   return (
     <>
-      <Button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-4 right-4 z-50 bg-black text-white hover:bg-blue-700"
-      >
-        <Search className="mr-2 h-4 w-4" /> Open AI Event Search
-      </Button>
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
-          >
-            <Card className="w-full max-w-4xl bg-black text-white">
+     
+     
+            <Card className="w-full border-0 max-w-8xl bg-black text-white h-[80vh]">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold">AI Event Search</CardTitle>
-                <CardDescription className="text-blue-100">Enter your event search query and let AI find real future events for you</CardDescription>
+                <CardTitle className="text-2xl font-bold text-center">AI Event Search</CardTitle>
+                <CardDescription className="text-blue-100 text-center">Enter your event search query and let AI find real future events for you</CardDescription>
               </CardHeader>
               <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <Textarea 
-                    value={userText} 
-                    onChange={(e) => setUserText(e.target.value)} 
-                    className="min-h-[100px] bg-white text-blue-900 placeholder-blue-400"
-                    placeholder="Enter your event search query here... (e.g., 'Music festivals in Europe next summer')"
-                  />
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-white text-blue-600 hover:bg-blue-100"
-                    disabled={isLoading}
-                  >
-                    {isLoading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Searching for events...
-                      </>
-                    ) : (
-                      <>
-                        <Search className="mr-2 h-4 w-4" />
-                        Search Events
-                      </>
-                    )}
-                  </Button>
-                </form>
-                {events.length > 0 && (
-                  <ScrollArea className="h-[400px] mt-4">
-                    <div className="space-y-4">
-                      {events.map((event) => (
-                        <Card key={event.id} className="bg-black text-white">
-                          <CardContent className="p-4">
-                            <h3 className="text-lg font-semibold">{event.name}</h3>
-                            <p className="text-sm text-blue-200">
-                              <Calendar className="inline-block mr-1 h-4 w-4" />
-                              {new Date(event.dates.start.localDate).toLocaleDateString()}
-                            </p>
-                            <p className="text-sm text-blue-200">
-                              <MapPin className="inline-block mr-1 h-4 w-4" />
-                              {event._embedded.venues[0].name}, {event._embedded.venues[0].city.name}, {event._embedded.venues[0].country.name}
-                            </p>
-                            
-                          </CardContent>
-                        </Card>
-                      ))}
+
+                <PlaceholdersAndVanishInput
+                  placeholders={placeholders}
+                  onChange={(e) => setUserText(e.target.value)}
+                  onSubmit={onSubmit}
+                />
+                  {isLoading && (
+                    <div className="flex justify-center items-center mt-5">
+                      <h2>Looking for events...</h2>
+                      <Loader2 className="animate-spin h-8 w-8 text-white" />
                     </div>
-                  </ScrollArea>
-                )}
+                  )}
+                  
+                  {
+                    events.length == 0 &&  <div className="mt-20 flex justify-center items-center px-4">
+                    <div className="text-4xl mx-auto font-normal text-neutral-600 dark:text-neutral-400">
+                      Discover
+                      <FlipWords words={words} /> <br />
+                      events with Aceternity UI
+                    </div>
+                  </div>
+}
+                 
+                  
+                  {
+                  events.length > 0 && <CoverFlow vevents={events} />
+                  }
+               
               </CardContent>
-              <CardFooter className="justify-end">
-                <Button
-                  variant="outline"
-                  onClick={() => setIsOpen(false)}
-                  className="bg-white text-blue-600 hover:bg-blue-100"
-                >
-                  <X className="mr-2 h-4 w-4" /> Close
-                </Button>
-              </CardFooter>
+              
             </Card>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      
     </>
   )
 }
