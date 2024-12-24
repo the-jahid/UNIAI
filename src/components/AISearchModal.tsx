@@ -165,8 +165,8 @@ export default function AISearchModal() {
      
             <Card className="w-full border-0 max-w-8xl bg-black text-white h-[80vh]">
               <CardHeader>
-                <CardTitle className="text-2xl font-bold text-center">AI Event Search</CardTitle>
-                <CardDescription className="text-blue-100 text-center">Enter your event search query and let AI find real future events for you</CardDescription>
+                <CardTitle className="text-2xl font-bold text-center">The Experience Engine</CardTitle>
+                <CardDescription className="text-blue-100 text-center">Find Events, Concerts, And More That Best Match you</CardDescription>
               </CardHeader>
               <CardContent>
 
@@ -187,7 +187,7 @@ export default function AISearchModal() {
                     <div className="text-4xl mx-auto font-normal text-neutral-600 dark:text-neutral-400">
                       Discover
                       <FlipWords words={words} /> <br />
-                      events with Aceternity UI
+                      events with UNI AI
                     </div>
                   </div>
 }
