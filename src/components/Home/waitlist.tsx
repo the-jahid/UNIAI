@@ -7,7 +7,7 @@ const Waitlist = () => {
            Sign Up for the Waitlist
         </h2>
         <div>
-        <div data-tf-live="01JAK8E39XDYNVS2SRZRK8BT67"></div><script src="//embed.typeform.com/next/embed.js"/>
+        <div data-tf-live="01JG3BA4YR505J4BX4FN9K0G6W"></div><script src="//embed.typeform.com/next/embed.js"></script>
         </div>
     </div>
   )
