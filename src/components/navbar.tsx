@@ -99,7 +99,7 @@ export default function Header() {
                   className="md:hidden mt-4 flex flex-col space-y-4"
                 >
           <Link href="/" className="text-white hover:text-sky-400 transition-colors">Home</Link>
-                <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link>
+                {/* <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link> */}
                
           
                 <Link href="/events" className="text-white hover:text-sky-400 transition-colors">Beta</Link>
