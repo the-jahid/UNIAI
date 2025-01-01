@@ -61,7 +61,7 @@ export default function Header() {
 
               <nav className="hidden md:flex space-x-6 items-center">
                 <Link href="/" className="text-white hover:text-sky-400 transition-colors">Home</Link>
-                <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link>
+                {/* <Link href="/about" className="text-white hover:text-sky-400 transition-colors">About Us</Link> */}
             
                 <Link href="/events" className="text-white hover:text-sky-400 transition-colors">Beta</Link>
                
