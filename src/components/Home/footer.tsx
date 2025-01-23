@@ -102,7 +102,7 @@ export default function Footer() {
             animate={{ width: 48 }}
             transition={{ delay: 0.4, duration: 0.8 }}
           />
-{['Home', 'About'].map((item, index) => {
+{['Home'].map((item, index) => {
             const href = item === 'Home' ? '/' : `/${item.toLowerCase().replace(/\s+/g, '')}`;
             return (
               <motion.div
