@@ -135,21 +135,14 @@ export default function Footer() {
           />
           <div className="flex space-x-4">
             <motion.a
-              href="#"
+              href="https://www.instagram.com/theuniapp_/"
               className="text-white hover:text-blue-400 transition-colors"
               whileHover={{ scale: 1.2 }}
               whileTap={{ scale: 0.9 }}
             >
               <Instagram size={24} />
             </motion.a>
-            <motion.a
-              href="#"
-              className="text-white hover:text-blue-400 transition-colors"
-              whileHover={{ scale: 1.2 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <ExternalLink size={24} />
-            </motion.a>
+           
           </div>
         </div>
       </div>
