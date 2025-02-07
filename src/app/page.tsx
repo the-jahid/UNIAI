@@ -14,8 +14,8 @@ export default function Home() {
   return (
       <div>
           <HeroParallaxDemo />
-          {/* <ContainerScrollDemo /> */}
-          <HeroSection />
+          <ContainerScrollDemo />
+       
           <AdvancedCarousel />
           <Waitlist />
           <FeaturesSectionDemo />
