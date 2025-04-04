@@ -7,6 +7,7 @@ import FeaturedOn from "@/components/Home/featuredOn";
 import Footer from "@/components/Home/footer";
 import HeroSection from "@/components/Home/newb";
 import { HeroParallaxDemo } from "@/components/Home/newHero";
+import { UniSignupForm } from "@/components/Home/uni-signup-form";
 import Waitlist from "@/components/Home/waitlist";
 import AdvancedCarousel from "@/components/Home/wobble";
 
@@ -17,8 +18,10 @@ export default function Home() {
           <ContainerScrollDemo />
        
           <AdvancedCarousel />
-          <Waitlist />
+          {/* <Waitlist /> */}
+          <UniSignupForm />
           <FeaturesSectionDemo />
+          
           <FAQ />
           <FeaturedOn />
           <Footer />
