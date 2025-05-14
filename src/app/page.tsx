@@ -17,8 +17,11 @@ export default function Home() {
           <HeroParallaxDemo />
           {/* <ContainerScrollDemo /> */}
        
-           <div style={{ height: '600px', position: 'relative' }}>
-            <h2 className="text-white text-center font-bold text-6xl" >Your Onestop For Everything Lifestyle & IRL Culture</h2>
+           <div style={{ height: '600px', position: 'relative', marginTop: '40px' }}>
+         
+              <h2 className="bg-clip-text text-white text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
+          Your Onestop For Everything Lifestyle & IRL Culture
+        </h2>
            <CircularGallery bend={3} textColor="#ffffff" borderRadius={0.05} />
            </div>
           {/* <Waitlist /> */}

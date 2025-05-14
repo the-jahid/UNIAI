@@ -105,7 +105,9 @@ export default function FeaturedOn() {
   return (
     <section className="w-full bg-black py-16">
       <div className="container mx-auto px-4">
-        <h2 className="text-center text-white text-5xl font-thin mb-16">Featured on</h2>
+        <h2 className="bg-clip-text text-white text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight mb-10">
+         Featured on
+        </h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 md:gap-12">
           {logos.map((logo) => (
             <div key={logo.name} className="flex items-center justify-center">
