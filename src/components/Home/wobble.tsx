@@ -8,20 +8,20 @@ const slides = [
   {
     title: "Discover Your World",
     description: "Discover Events, New People, and Places to Go Near You",
-    image: "/2.png",
+    image: "https://i.ibb.co/h11PLr1J/1920x1080-See-Your-City-Mapped-Out-Web-V2.webp",
     alt: "discover"
   },
   {
     title: "Match & Mingle",
     description: "Tell it & You Get it: Get Matched Up With Events & Places to Go That Match Your Vibe",
-    image: "/4.png",
+    image: "https://i.ibb.co/cXpmpH0w/1920x1080-No-Matter-How-Specific-Mob-V1-1.webp",
     alt: "m&m"
   },
   
   {
     title: "Know Your Crowd Before You Go",
     description: "See who's attending and your compatibility score with each person. Connect with people who share your interests, go to your school, or match your vibe",
-    image: "/onesnew.jpg",
+    image: "https://i.ibb.co/zWCHXzhs/manage-ur-memories-desktop.jpg",
     alt: "know"
   }
 ]
