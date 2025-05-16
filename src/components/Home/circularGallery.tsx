@@ -2,6 +2,7 @@
 
 import { useRef, useEffect } from "react"
 import { Renderer, Camera, Transform, Plane, Mesh, Program, Texture } from "ogl"
+import Link from "next/link"
 
 import "./CircularGallery.css"
 
@@ -475,7 +476,7 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `https://i.ibb.co/3m2ysDnr/city-mapped-dsktp-1.webp`,
+        image: `https://i.ibb.co/h11PLr1J/1920x1080-See-Your-City-Mapped-Out-Web-V2.webp`,
         text: "",
       },
       {
@@ -483,7 +484,7 @@ class App {
         text: "",
       },
       {
-        image: `https://i.ibb.co/zWCHXzhs/manage-ur-memories-desktop.jpg`,
+        image: `https://i.ibb.co/3m2ysDnr/city-mapped-dsktp-1.webp`,
         text: "",
       },
     ]
@@ -695,9 +696,19 @@ export default function CircularGallery({
       borderRadius,
       font,
     })
+
+    // Add CSS to make it clear the gallery is clickable
+    if (containerRef.current) {
+      containerRef.current.style.cursor = "pointer"
+    }
+
     return () => {
       app.destroy()
     }
   }, [items, bend, textColor, borderRadius, font])
-  return <div className="circular-gallery" ref={containerRef} />
+  return (
+    <Link href="https://form.typeform.com/to/Mk0sQjuc" target="_blank" rel="noopener noreferrer">
+      <div className="circular-gallery" ref={containerRef} style={{ cursor: "pointer" }} />
+    </Link>
+  )
 }
