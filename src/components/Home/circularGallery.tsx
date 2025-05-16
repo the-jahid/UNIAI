@@ -367,7 +367,7 @@ class Media {
     }
     this.scale = this.screen.height / 1500
     this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height
-    this.plane.scale.x = (this.viewport.width * (700 * this.scale)) / this.screen.width
+    this.plane.scale.x = (this.viewport.width * (1000 * this.scale)) / this.screen.width
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
     this.padding = 2
     this.width = this.plane.scale.x + this.padding
@@ -475,15 +475,15 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `/MYM.jpg`,
+        image: `https://i.ibb.co/h11PLr1J/1920x1080-See-Your-City-Mapped-Out-Web-V2.webp`,
         text: "",
       },
       {
-        image: `/wcfi.jpg`,
+        image: `https://i.ibb.co/cXpmpH0w/1920x1080-No-Matter-How-Specific-Mob-V1-1.webp`,
         text: "",
       },
       {
-        image: `/seeya.jpg`,
+        image: `https://i.ibb.co/zWCHXzhs/manage-ur-memories-desktop.jpg`,
         text: "",
       },
     ]
