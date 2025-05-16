@@ -172,7 +172,7 @@ export const Header = () => {
           width={600}
           height={600}
           alt="UNI App Screenshot"
-          className="rounded-3xl shadow-2xl transform -rotate-6 scale-90"
+          className="rounded-3xl shadow-2xl transform -rotate-6 scale-90 z-50"
         />
       </motion.div>
       <motion.div

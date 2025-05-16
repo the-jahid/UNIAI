@@ -484,7 +484,7 @@ class App {
         text: "",
       },
       {
-        image: `https://i.ibb.co/3m2ysDnr/city-mapped-dsktp-1.webp`,
+        image: `https://i.ibb.co/zWCHXzhs/manage-ur-memories-desktop.jpg`,
         text: "",
       },
     ]
@@ -710,5 +710,6 @@ export default function CircularGallery({
     <Link href="https://form.typeform.com/to/Mk0sQjuc" target="_blank" rel="noopener noreferrer">
       <div className="circular-gallery" ref={containerRef} style={{ cursor: "pointer" }} />
     </Link>
+    
   )
 }
