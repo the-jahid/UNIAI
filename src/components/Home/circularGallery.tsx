@@ -366,9 +366,20 @@ class Media {
         this.plane.program.uniforms.uViewportSizes.value = [this.viewport.width, this.viewport.height]
       }
     }
-    this.scale = this.screen.height / 1500
-    this.plane.scale.y = (this.viewport.height * (900 * this.scale)) / this.screen.height
-    this.plane.scale.x = (this.viewport.width * (1000 * this.scale)) / this.screen.width
+    this.scale = this.screen.height / 1500 // Medium scale factor (between 1200 and 2000)
+
+    // Apply additional scaling for different screen sizes
+    if (this.screen.width < 768) {
+      this.scale *= 0.85 // Medium size for mobile
+    } else if (this.screen.width < 1200) {
+      this.scale *= 0.95 // Medium size for tablets
+    } else {
+      this.scale *= 1.05 // Medium size for desktop
+    }
+
+    // Increased height from 750 to 850 while keeping width at 950
+    this.plane.scale.y = (this.viewport.height * (850 * this.scale)) / this.screen.height // Increased height
+    this.plane.scale.x = (this.viewport.width * (950 * this.scale)) / this.screen.width // Medium width
     this.plane.program.uniforms.uPlaneSizes.value = [this.plane.scale.x, this.plane.scale.y]
     this.padding = 2
     this.width = this.plane.scale.x + this.padding
@@ -476,11 +487,11 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `https://i.ibb.co/h11PLr1J/1920x1080-See-Your-City-Mapped-Out-Web-V2.webp`,
+        image: `/city mapped dsktp (2).webp`,
         text: "",
       },
       {
-        image: `https://i.ibb.co/cXpmpH0w/1920x1080-No-Matter-How-Specific-Mob-V1-1.webp`,
+        image: `/1920x1080-No Matter How Specific_Mob_V1 (1) (3).webp`,
         text: "",
       },
       {
@@ -710,6 +721,5 @@ export default function CircularGallery({
     <Link href="https://form.typeform.com/to/Mk0sQjuc" target="_blank" rel="noopener noreferrer">
       <div className="circular-gallery" ref={containerRef} style={{ cursor: "pointer" }} />
     </Link>
-    
   )
 }
