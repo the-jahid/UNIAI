@@ -475,7 +475,7 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `https://i.ibb.co/h11PLr1J/1920x1080-See-Your-City-Mapped-Out-Web-V2.webp`,
+        image: `https://i.ibb.co/3m2ysDnr/city-mapped-dsktp-1.webp`,
         text: "",
       },
       {
