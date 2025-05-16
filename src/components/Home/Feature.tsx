@@ -3,7 +3,7 @@ import createGlobe from "cobe";
 
 const FeaturesSectionDemo = () => {
   return (
-    <div className="relative z-20 py-10 max-w-7xl mx-auto flex flex-col justify-center items-center">
+    <div className="relative z-0 py-10 max-w-7xl mx-auto flex flex-col justify-center items-center mt-10">
       <div className="px-4 md:px-8">
         <h2 className="bg-clip-text text-white text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
           Plan Out Your Fun

@@ -50,12 +50,12 @@ export default function Header() {
           <div className="container mx-auto px-4 py-4">
             <div className="flex justify-between items-center">
               <div className="flex items-center space-x-2">
-                <div className="relative w-10 h-10">
+                {/* <div className="relative w-10 h-10">
                   <div className="w-10 h-10 bg-sky-400 rounded-full"></div>
                   <div className="absolute top-1/2 left-0 w-full h-0.5 bg-sky-400"></div>
                   <div className="absolute top-1/2 left-0 w-full h-0.5 bg-sky-400 -translate-y-2"></div>
                   <div className="absolute top-1/2 left-0 w-full h-0.5 bg-sky-400 translate-y-2"></div>
-                </div>
+                </div> */}
                 <span className="text-2xl font-bold text-white">UNI</span>
               </div>
 

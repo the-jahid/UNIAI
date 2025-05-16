@@ -10,93 +10,93 @@ export const products = [
     title: "",
     link: "#",
     thumbnail:
-      "/andrew-knechel-gG6yehL64fo-unsplash.jpg",
+      "/beautiful-girl-handsome-man-standing-night-street-illuminated-signboards-neon-lights.jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/andreas-ronningen-S2YssLw97l4-unsplash.jpg",
+      "/friends-eating-conversating-restaurant.jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/anthony-delanoix-hzgs56Ze49s-unsplash (1).jpg",
+      "/friends-having-fun-while-traveling.jpg",
   },
 
   {
     title: "",
     link: "#",
     thumbnail:
-      "/dave-lastovskiy-RygIdTavhkQ-unsplash (1).jpg",
+      "/friends-sitting-near-bonfire-smiling-playing-guitar-camping-grill-marshmallow.jpg",
   },
   {
     title: "Editrix AI",
     link: "#",
     thumbnail:
-      "/dave-lastovskiy-RygIdTavhkQ-unsplash (1).jpg",
+      "/full-shot-man-playing-guitar.jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/jacques-philippe-gollnick-2OcnCyCWHrI-unsplash.jpg",
-  },
-
-  {
-    title: "",
-    link: "#",
-    thumbnail:
-      "/jade-masri-74tlEYKgrBE-unsplash (1).jpg",
-  },
-  {
-    title: "",
-    link: "#",
-    thumbnail:
-      "/karina-lago-FKGqHjvxQZU-unsplash.jpg",
-  },
-  {
-    title: "",
-    link: "#",
-    thumbnail:
-      "/lindsey-bahia-Yas_6ngECJA-unsplash.jpg",
-  },
-  {
-    title: "",
-    link: "#",
-    thumbnail:
-      "/mitchell-orr---LyFIjXoFY-unsplash.jpg",
-  },
-  {
-    title: "",
-    link: "#",
-    thumbnail:
-      "/nicholas-green-nPz8akkUmDI-unsplash.jpg",
+      "/group-friends-searching-location-map.jpg",
   },
 
   {
     title: "",
     link: "#",
     thumbnail:
-      "/samantha-gades-fIHozNWfcvs-unsplash (1).jpg",
+      "/group-three-friends-eating-burgers.jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/samantha-gades-V_d6tUaniK8-unsplash.jpg",
+      "/informal-friendly-party-with-job-colleagues-cosy-cafe-with-delitious-snacks-warm-summer-day.jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/samantha-gades-XkBYYlZ4Ono-unsplash.jpg",
+      "/nightlife-people-having-fun-bars-clubs (1).jpg",
   },
   {
     title: "",
     link: "#",
     thumbnail:
-      "/yvette-de-wit-Kcx_YuUR-dw-unsplash.jpg",
+      "/nightlife-people-having-fun-bars-clubs (2).jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/nightlife-people-having-fun-bars-clubs.jpg",
+  },
+
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/tourists-city-with-map.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/traveler-woman-with-hat-backpack-enjoying-amazing-mountain-view.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/travelers-with-backpacks-poses-near-modern-airport.jpg",
+  },
+  {
+    title: "",
+    link: "#",
+    thumbnail:
+      "/young-beautiful-couple-with-hiking-backpacks-go-camping.jpg",
   },
 ];

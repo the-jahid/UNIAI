@@ -17,7 +17,7 @@ export default function Home() {
           <HeroParallaxDemo />
           {/* <ContainerScrollDemo /> */}
        
-           <div style={{ height: '600px', position: 'relative', marginTop: '40px' }}>
+           <div style={{ height: '600px', position: 'relative', marginTop: '40px', marginBottom:'70px' }}>
          
               <h2 className="bg-clip-text text-white text-center bg-gradient-to-b from-blue-400 to-neutral-700 dark:from-neutral-600 dark:to-white text-2xl md:text-4xl lg:text-7xl font-sans py-2 md:py-10 relative z-20 font-bold tracking-tight">
           Your Onestop For Everything Lifestyle & IRL Culture
@@ -28,7 +28,7 @@ export default function Home() {
           {/* <UniSignupForm /> */}
           <FeaturesSectionDemo />
 
-        
+        <div data-tf-live="01JG3BA4YR505J4BX4FN9K0G6W"></div><script src="//embed.typeform.com/next/embed.js"></script>
 
           <FAQ />
           <FeaturedOn />

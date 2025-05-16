@@ -3,10 +3,6 @@ import localFont from "next/font/local";
 import "./globals.css";
 import {
   ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton
 } from '@clerk/nextjs'
 import Header from "@/components/navbar";
 
@@ -23,8 +19,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "UNI AI",
-  description: "Our beta platform",
+  title: "UNI – The Social Scope of Your City",
+  description: "Discover local events, nightlife, and real-time hotspots curated just for you. UNI is your AI-powered guide to fun, connection, and culture.",
 };
 
 export default function RootLayout({

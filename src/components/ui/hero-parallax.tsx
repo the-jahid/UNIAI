@@ -168,7 +168,7 @@ export const Header = () => {
         dragElastic={0.1}
       >
         <Image
-          src="/freepik_br_12000575-0c2a-4ee4-a60a-bcfdeca6486e.png"
+          src="/SEARCH & MAP.png"
           width={600}
           height={600}
           alt="UNI App Screenshot"
