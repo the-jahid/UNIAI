@@ -487,7 +487,7 @@ class App {
   ) {
     const defaultItems = [
       {
-        image: `/city mapped dsktp (2).webp`,
+        image: `/https://i.ibb.co/3m2ysDnr/city-mapped-dsktp-1.webp`,
         text: "",
       },
       {

@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from 'react'
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
 import { ChevronDown } from 'lucide-react'
+import Link from 'next/link'
 
 const faqs = [
   {
@@ -19,7 +20,7 @@ const faqs = [
   },
   {
     question: "How do I sign up?",
-    answer: "Signing up for the UNI app is a breeze, all you've got to do is click here[https://form.typeform.com/to/Mk05Qjuc], and once you fill out the form you'll be signed up for our waitlist!"
+    answer: <div>"Signing up for the UNI app is a breeze, all you've got to do is click  <Link className='text-blue-500' href={'https://form.typeform.com/to/Mk0sQjuc'}>here</Link>, and once you fill out the form you'll be signed up for our waitlist!"</div>
   }
 ]
 
@@ -77,7 +78,7 @@ const BackgroundSVG = ({ mouseX, mouseY }: { mouseX: any, mouseY: any }) => {
 
 interface FAQItemProps {
   question: string;
-  answer: string;
+  answer: any;
   isOpen: boolean;
   toggleOpen: () => void;
   index: number;

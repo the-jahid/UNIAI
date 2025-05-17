@@ -32,7 +32,7 @@ export default function Home() {
           {/* <UniSignupForm /> */}
           <FeaturesSectionDemo />
 
-        <div data-tf-live="01JG3BA4YR505J4BX4FN9K0G6W"></div><script src="//embed.typeform.com/next/embed.js"></script>
+          <div data-tf-live="01JG3BA4YR505J4BX4FN9K0G6W"></div><script src="//embed.typeform.com/next/embed.js"></script>
 
           <FAQ />
           <FeaturedOn />
