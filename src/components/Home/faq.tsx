@@ -20,7 +20,7 @@ const faqs = [
   },
   {
     question: "How do I sign up?",
-    answer: <div>"Signing up for the UNI app is a breeze, all you've got to do is click  <Link className='text-blue-500' href={'https://form.typeform.com/to/Mk0sQjuc'}>here</Link>, and once you fill out the form you'll be signed up for our waitlist!"</div>
+    answer: <div>"Signing up for the UNI app is a breeze, all you've got to do is click here <br /> <Link className='text-blue-500' href={'https://form.typeform.com/to/Mk0sQjuc'}>here</Link>  , and once you fill out the form you'll be signed up for our waitlist!"</div>
   }
 ]
 
